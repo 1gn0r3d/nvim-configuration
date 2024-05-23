@@ -16,6 +16,8 @@ return {
     config = function()
         local cmp = require('cmp')
         local cmp_lsp = require("cmp_nvim_lsp")
+        local navic = require('nvim-navic')
+
         local capabilities = vim.tbl_deep_extend(
             "force",
             {},
@@ -40,6 +42,11 @@ return {
                 ["lua_ls"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.lua_ls.setup {
+                        on_attach = function(client, bufnr)
+                            if client.server_capabilities.documentSymbolProvider then
+                                navic.attach(client, bufnr)
+                            end
+                        end,
                         capabilities = capabilities,
                         settings = {
                             Lua = {
@@ -54,6 +61,11 @@ return {
                 ["pylsp"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.pylsp.setup {
+                        on_attach = function(client, bufnr)
+                            if client.server_capabilities.documentSymbolProvider then
+                                navic.attach(client, bufnr)
+                            end
+                        end,
                         capabilities = capabilities,
                         settings = {
                             pylsp = {

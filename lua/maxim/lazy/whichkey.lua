@@ -9,6 +9,7 @@ return {
     config = function()
         require('which-key').register({
             ["<leader>g"] = { name = "Gitmoji & Git fugitive" },
+            ["<leader>h"] = { name = "Remove search highlights." },
             ["<leader>m"] = { name = "~~ MAKE IT RAIN! ~~" },
             ["<leader>p"] = { name = "Project ..." },
             ["<leader>pW"] = { name = "Word ..." },

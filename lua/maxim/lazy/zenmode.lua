@@ -8,12 +8,11 @@ return {
                     options = {}
                 },
             }
-            require("zen-mode").toggle()
             vim.wo.wrap = false
             vim.wo.number = true
             vim.wo.rnu = true
             vim.opt.colorcolumn = "100"
-            --            ColorMyPencils()
+            require("zen-mode").toggle()
         end, { desc = "Toggle zen mode." })
 
 
@@ -29,7 +28,6 @@ return {
             vim.wo.number = false
             vim.wo.rnu = false
             vim.opt.colorcolumn = "0"
-            --            ColorMyPencils()
         end, { desc = "Toggle zen mode. (no line markers)" })
     end
 }

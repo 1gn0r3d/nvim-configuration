@@ -16,7 +16,7 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv("USERPROFILE") .. "/.nvim/undodir"
 vim.opt.undofile = true
 
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
@@ -36,6 +36,7 @@ vim.opt.clipboard = "unnamedplus"
 -- Open splits more naturally
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+
 
 -- ignore case in Vim search
 -- vim.opt.ignorecase = true
