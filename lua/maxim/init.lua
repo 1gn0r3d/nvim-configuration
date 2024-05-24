@@ -2,6 +2,7 @@ require("maxim.set")
 require("maxim.remap")
 
 require("maxim.lazy_init")
+require("maxim.run_python_autocmd")
 
 -- terminal settings
 local powershell_options = {
