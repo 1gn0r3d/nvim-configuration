@@ -14,10 +14,28 @@ return {
                     winbar = {},
                 },
                 always_divide_middle = true,
+                globalstatus = true,
             },
             sections = {
                 lualine_a = { "mode" },
-                lualine_b = { "branch", "diff" },
+                lualine_b = { "branch" },
+                lualine_c = { "diff" },
+                lualine_x = {},
+                lualine_y = { "searchcount" },
+                lualine_z = { "progress" },
+            },
+            inactive_sections = {
+                lualine_a = {},
+                lualine_b = {},
+                lualine_c = {},
+                lualine_x = {},
+                lualine_y = {},
+                lualine_z = {},
+            },
+            tabline = {},
+            winbar = {
+                lualine_a = {},
+                lualine_b = {},
                 lualine_c = {
                     { "filename" },
                     {
@@ -30,11 +48,11 @@ return {
                         color = { fg = "#f3ca28" },
                     },
                 },
-                lualine_x = { "searchcount" },
-                lualine_y = { "filetype" },
-                lualine_z = { "progress" },
+                lualine_x = {},
+                lualine_y = {},
+                lualine_z = { "filetype" },
             },
-            inactive_sections = {
+            inactive_winbar = {
                 lualine_a = {},
                 lualine_b = {},
                 lualine_c = { "filename" },
@@ -42,7 +60,6 @@ return {
                 lualine_y = {},
                 lualine_z = {},
             },
-            tabline = {},
             extensions = {},
         })
         -- Disable the command line when not in command mode (to make room for the status bar)

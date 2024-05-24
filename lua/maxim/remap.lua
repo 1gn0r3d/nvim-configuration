@@ -10,7 +10,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected line up." }
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Append next line to previous line." }) -- use ctrl+d and ctrl+u to scroll one third of the window while keeping the cursor centered
 
 -- Turn off highlights after search
-vim.keymap.set("n", "<leader>hl", ":noh<CR>", { desc = "Remove search highlights." })
+vim.keymap.set("n", "<leader>hl", ":noh<CR><CR>", { desc = "Remove search highlights." })
 
 local function scroll(direction)
     local height = vim.api.nvim_win_get_height(0)
