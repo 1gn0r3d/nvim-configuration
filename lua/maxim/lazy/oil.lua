@@ -33,9 +33,9 @@ return {
         vim.keymap.set("n", "<leader>pV", open_oil_in_right_split,
             { desc = "Open parent directory in split to the right." })
 
-        -- Open parent directory in floating window
-        vim.keymap.set("n", "<leader>-", require("oil").toggle_float,
-            { desc = "Open parent directory in floating window." })
+        --        -- Open parent directory in floating window
+        --        vim.keymap.set("n", "<leader>-", require("oil").toggle_float,
+        --            { desc = "Open parent directory in floating window." })
 
         -- Setup an autocommand which maps <leader>pv while inside an oil window
         -- to go back to the previous buffer.

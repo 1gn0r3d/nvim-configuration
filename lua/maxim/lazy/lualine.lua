@@ -20,8 +20,8 @@ return {
                 lualine_a = { "mode" },
                 lualine_b = { "branch" },
                 lualine_c = { "diff" },
-                lualine_x = {},
-                lualine_y = { "searchcount" },
+                lualine_x = { "searchcount" },
+                lualine_y = { "location" },
                 lualine_z = { "progress" },
             },
             inactive_sections = {

@@ -54,7 +54,7 @@ vim.keymap.set("n", "<leader>j", "<cmd>cprev<CR>zz", { desc = "Go to previous it
 vim.keymap.set("n", "<leader>K", "<cmd>lnext<CR>zz", { desc = "Go to next item in location list." })
 vim.keymap.set("n", "<leader>J", "<cmd>lprev<CR>zz", { desc = "Go to previous item in location list." })
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+vim.keymap.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
     { desc = "Search and replace the word under the cursor globally in the current file." })
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>",
     { silent = true, desc = "Make the current file executable. (Linux)" })
@@ -63,7 +63,7 @@ vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>", { d
 
 -- remaps for creating horizontal and vertical splits
 vim.keymap.set("n", "<leader>sh", ":split<CR>", { noremap = true, silent = true, desc = "Create horizontal split." })
-vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", { noremap = true, silent = true, desc = "Create vertical split." })
+vim.keymap.set("n", "<leader>s", ":vsplit<CR>", { noremap = true, silent = true, desc = "Create vertical split." })
 vim.keymap.set("n", "<leader>q", "<C-w>c", { noremap = true, silent = true, desc = "Close current active split." })
 vim.keymap.set("n", "<C-q>", "<C-w>c", { noremap = true, silent = true, desc = "Close current active split." })
 
@@ -72,7 +72,6 @@ vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true, desc = "
 vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true, desc = "Navigate to down split." })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true, desc = "Navigate to up split." })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true, desc = "Navigate to right split." })
-
 
 -- terminal settings
 vim.keymap.set('t', '<Esc>', "<C-\\><C-n>", { desc = "Exit terminal." })
