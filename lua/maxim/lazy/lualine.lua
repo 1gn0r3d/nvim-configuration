@@ -3,10 +3,17 @@ return {
     requires = { "nvim-web-devicons" },
     config = function()
         local navic = require('nvim-navic')
+        local colors = require('catppuccin.palettes').get_palette()
+        local mytheme = require('lualine.themes.dracula')
+        mytheme.terminal = {
+            a = { bg = colors.cyan, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.lightgray, fg = colors.white },
+            c = { bg = colors.gray, fg = colors.white },
+        }
         require("lualine").setup({
             options = {
                 icons_enabled = true,
-                theme = "dracula",
+                theme = mytheme,
                 component_separators = { left = "", right = "" },
                 section_separators = { left = "", right = "" },
                 disabled_filetypes = {
@@ -19,7 +26,7 @@ return {
             sections = {
                 lualine_a = { "mode" },
                 lualine_b = { "branch" },
-                lualine_c = { "diff" },
+                lualine_c = { "diff", "diagnostics" },
                 lualine_x = { "searchcount" },
                 lualine_y = { "location" },
                 lualine_z = { "progress" },
@@ -35,9 +42,8 @@ return {
             tabline = {},
             winbar = {
                 lualine_a = {},
-                lualine_b = {},
+                lualine_b = { "filename" },
                 lualine_c = {
-                    { "filename" },
                     {
                         function()
                             return navic.get_location()
@@ -45,7 +51,7 @@ return {
                         cond = function()
                             return navic.is_available()
                         end,
-                        color = { fg = "#f3ca28" },
+                        color = { fg = colors['green'] },
                     },
                 },
                 lualine_x = {},
@@ -54,8 +60,8 @@ return {
             },
             inactive_winbar = {
                 lualine_a = {},
-                lualine_b = {},
-                lualine_c = { "filename" },
+                lualine_b = { "filename" },
+                lualine_c = {},
                 lualine_x = {},
                 lualine_y = {},
                 lualine_z = {},
