@@ -1,0 +1,68 @@
+return {
+    "akinsho/toggleterm.nvim",
+    config = function()
+        require("toggleterm").setup({
+            size = function(term)
+                if term.direction == "horizontal" then
+                    return 15
+                elseif term.direction == "vertical" then
+                    return vim.o.columns * 0.333
+                elseif term.direction == "float" then
+                    return 25
+                end
+            end,
+            open_mapping = [[<c-\>]],
+            terminal_mappings = true,
+            hide_numbers = true,
+            shade_terminals = true,
+            shading_factor = 2,
+            start_in_insert = true,
+            close_on_exit = true,
+            direction = "float",
+            float_opts = {
+                border = "curved",
+                winblend = 0,
+                highlights = {
+                    border = "Normal",
+                    background = "Normal",
+                },
+            },
+        })
+        -- create a function to map hotkeys to a terminal buffer
+        local function map_terminal_hotkeys(e)
+            vim.keymap.set('t', '<esc>', [[<C-\><C-n>]],
+                { buffer = e.buf, noremap = true, desc = "Exit terminal mode." })
+            vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-W>h]],
+                { buffer = e.buf, noremap = true, desc = "Naviate to left split." })
+            vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-W>j]],
+                { buffer = e.buf, noremap = true, desc = "Navigate to down split." })
+            vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-W>k]],
+                { buffer = e.buf, noremap = true, desc = "Navigate to up split." })
+            vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-W>l]],
+                { buffer = e.buf, noremap = true, desc = "Navigate to right split." })
+        end
+        -- create some autocommands to set keymappings within the terminal window
+        vim.api.nvim_create_augroup("ToggleTerm", { clear = true })
+        local autocmd = vim.api.nvim_create_autocmd
+        autocmd("TermOpen", {
+            group = "ToggleTerm",
+            callback = function(e)
+                map_terminal_hotkeys(e)
+            end
+        })
+
+        -- create some function for special terminals
+        local Terminal = require("toggleterm.terminal").Terminal
+        local anaconda = Terminal:new({ cmd = "~/anaconda3/Scripts/activate.bat;~/anaconda3/python.exe", hidden = true })
+        function _ANACONDA_TOGGLE()
+            anaconda:toggle()
+            map_terminal_hotkeys(anaconda)
+        end
+
+        local python = Terminal:new({ cmd = "python3", hidden = true })
+        function _PYTHON_TOGGLE()
+            python:toggle()
+            map_terminal_hotkeys(python)
+        end
+    end,
+}
