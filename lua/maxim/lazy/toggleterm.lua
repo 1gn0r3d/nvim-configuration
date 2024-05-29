@@ -64,5 +64,24 @@ return {
             python:toggle()
             map_terminal_hotkeys(python)
         end
+
+        local file = nil
+        local run_python
+        function _RUN_PYTHON_TOGGLE()
+            local filename = vim.fn.expand('%')
+            if not filename:match("%.py$") then
+                return
+            end
+            if filename ~= file then
+                file = filename
+                local cmd = "~\\anaconda3\\Scripts\\activate.bat;~\\anaconda3\\python.exe '" .. file .. "'"
+                run_python = Terminal:new({ cmd = cmd, direction = 'vertical', hidden = true })
+            end
+            run_python:toggle()
+            map_terminal_hotkeys(run_python)
+        end
+
+        vim.keymap.set("n", '<leader>xp', _RUN_PYTHON_TOGGLE,
+            { noremap = true, desc = 'Execute python file in split terminal.' })
     end,
 }
