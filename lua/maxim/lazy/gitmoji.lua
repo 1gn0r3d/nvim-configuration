@@ -31,7 +31,7 @@ return {
                         local selection = action_state.get_selected_entry()
                         if selection then
                             local s = vim.split(selection.value, '-')
-                            vim.cmd('normal! i' .. s[#s] .. s[1] .. '\r\r')
+                            vim.cmd('normal! i[' .. s[1] .. s[#s] .. ']' .. '\r\r')
                         end
                     end)
 
