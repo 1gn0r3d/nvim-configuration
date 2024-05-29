@@ -7,7 +7,11 @@ return {
     },
     config = function()
         local neogit = require('neogit')
-        neogit.setup()
+        neogit.setup({
+            status = {
+                recent_commit_count = 20
+            }
+        })
 
         -- set keymaps
         vim.keymap.set("n", "<leader>gs", function()
