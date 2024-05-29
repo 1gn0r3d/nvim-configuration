@@ -13,6 +13,13 @@ return {
         vim.keymap.set("n", "<leader>gs", function()
             neogit.open({ kind = 'auto' })
         end, { desc = "Open Neogit window." })
+        vim.keymap.set("n", "<leader>p", function()
+            if vim.bo.ft ~= "NeogitStatus" then
+                print("Buffer is not a NeogitStatus buffer.")
+            end
+            neogit.push()
+        end)
+
 
         -- The next section tries to set up keymaps only when the buffer is a NeogitStatus buffer.
         -- This is however not working because the fileytpe is only set afte the BuffWinEnter
