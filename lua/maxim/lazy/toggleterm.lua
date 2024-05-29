@@ -66,19 +66,29 @@ return {
         end
 
         local file = nil
-        local run_python
+        local run_python = nil
         function _RUN_PYTHON_TOGGLE()
             local filename = vim.fn.expand('%')
+            -- stop if the file is not a python file
             if not filename:match("%.py$") then
                 return
             end
+            -- if the file does not match the running file, create a new run_python terminal and
+            -- map the hotkeys. Kill the running terminal first if it exists
             if filename ~= file then
+                print("Running new file.")
                 file = filename
+                if run_python ~= nil then
+                    run_python:shutdown()
+                end
                 local cmd = "~\\anaconda3\\Scripts\\activate.bat;~\\anaconda3\\python.exe '" .. file .. "'"
                 run_python = Terminal:new({ cmd = cmd, direction = 'vertical', hidden = true })
+                map_terminal_hotkeys(run_python)
             end
-            run_python:toggle()
-            map_terminal_hotkeys(run_python)
+            -- if a run python terminal exists
+            if run_python ~= nil then
+                run_python:toggle()
+            end
         end
 
         vim.keymap.set("n", '<leader>xp', _RUN_PYTHON_TOGGLE,
