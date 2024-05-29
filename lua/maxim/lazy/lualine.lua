@@ -3,13 +3,9 @@ return {
     requires = { "nvim-web-devicons" },
     config = function()
         local navic = require('nvim-navic')
-        local colors = require('catppuccin.palettes').get_palette()
-        local mytheme = require('lualine.themes.dracula')
-        mytheme.terminal = {
-            a = { bg = colors.cyan, fg = colors.black, gui = 'bold' },
-            b = { bg = colors.lightgray, fg = colors.white },
-            c = { bg = colors.gray, fg = colors.white },
-        }
+        local mytheme = require('maxim.lualine_theme.theme')
+        local colors = require('maxim.lualine_theme.colors')
+
         require("lualine").setup({
             options = {
                 icons_enabled = true,
