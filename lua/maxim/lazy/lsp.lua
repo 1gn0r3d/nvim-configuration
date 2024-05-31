@@ -29,7 +29,6 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
-                "rust_analyzer",
                 "pylsp",
             },
             handlers = {
@@ -50,10 +49,18 @@ return {
                         capabilities = capabilities,
                         settings = {
                             Lua = {
-                                runtime = { version = "Lua 5.1" },
+                                runtime = { version = "LuaJIT" },
                                 diagnostics = {
-                                    globals = { "vim", "it", "describe", "before_each", "after_each" },
-                                }
+                                    globals = { "vim" },
+                                    -- globals = { "vim", "it", "describe", "before_each", "after_each" },
+                                },
+                                workspace = {
+                                    library = vim.api.nvim_get_runtime_file("", true),
+                                    checkThirdParty = false,
+                                },
+                                telemetry = {
+                                    enable = false,
+                                },
                             }
                         }
                     }

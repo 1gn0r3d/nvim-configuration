@@ -8,7 +8,8 @@ return {
     opts = {},
     config = function()
         require('which-key').register({
-            ["<leader>g"] = { name = "Gitmoji & Git fugitive" },
+            ["<leader>g"] = { name = "Git related operations [Gitmoji, NeoGit, Git fugitive]" },
+            ["<leader>gt"] = { name = "Toggle ..." },
             ["<leader>h"] = { name = "Remove search highlights." },
             ["<leader>m"] = { name = "~~ MAKE IT RAIN! ~~" },
             ["<leader>p"] = { name = "Project ..." },
