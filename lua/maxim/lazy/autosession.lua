@@ -14,8 +14,7 @@ return {
 
         -- Set mapping for searching a session.
         -- ⚠️ This will only work if Telescope.nvim is installed
-        vim.keymap.set("n", "<leader>S", require("auto-session.session-lens").search_session, {
-            noremap = true,
-        })
+        vim.keymap.set("n", "<leader>S", require("auto-session.session-lens").search_session,
+            { noremap = true, desc = "Open session switcher with telescope." })
     end
 }

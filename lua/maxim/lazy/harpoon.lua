@@ -35,10 +35,10 @@ return {
 
         vim.keymap.set("n", "<leader>E", function()
             toggle_telescope(harpoon:list())
-        end)
+        end, { desc = "Open harpoon quicktogglelist in telescope." })
         vim.keymap.set("n", "<C-S-E>", function()
             harpoon.ui:toggle_quick_menu(harpoon:list())
-        end)
+        end, { desc = "Open harpoon quicktogglelist in telescope." })
 
         -- Set hotkeys to add to quicktoggle list
         vim.keymap.set("n", "<leader>a", function()

@@ -2,7 +2,14 @@ vim.g.mapleader = " "
 -- keymap for :Ex depreciated by Oil.nvim plugin
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'Project view' })
 
-vim.keymap.set("n", "<leader>qq", ":wqa<CR>", { desc = "Save and quit all." })
+-- Saving and quitting
+vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file." })
+vim.keymap.set("n", "<leader>qq", ":qa!<CR>", { desc = "Quit all." })
+vim.keymap.set("n", "<leader>qs", ":wqa!<CR>", { desc = "Save and quit all." })
+vim.keymap.set("n", "<leader>q", ":q!<CR>",
+    { noremap = true, silent = true, desc = "Close current window without saving." })
+vim.keymap.set("n", "<C-q>", ":q!<CR>",
+    { noremap = true, silent = true, desc = "Close current window without saving." })
 
 -- Move lines up and down using J and K in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected line down." })
@@ -66,8 +73,6 @@ vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>", { d
 -- remaps for creating horizontal and vertical splits
 vim.keymap.set("n", "<leader>sh", ":split<CR>", { noremap = true, silent = true, desc = "Create horizontal split." })
 vim.keymap.set("n", "<leader>s", ":vsplit<CR>", { noremap = true, silent = true, desc = "Create vertical split." })
-vim.keymap.set("n", "<leader>q", "<C-w>c", { noremap = true, silent = true, desc = "Close current active split." })
-vim.keymap.set("n", "<C-q>", "<C-w>c", { noremap = true, silent = true, desc = "Close current active split." })
 
 -- remaps for navigating horizontal and vertical splits
 vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true, desc = "Navigate to left split." })
