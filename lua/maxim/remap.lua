@@ -5,7 +5,7 @@ vim.g.mapleader = " "
 -- Saving and quitting
 vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file." })
 vim.keymap.set("n", "<leader>qq", ":qa!<CR>", { desc = "Quit all." })
-vim.keymap.set("n", "<leader>qs", ":wqa!<CR>", { desc = "Save and quit all." })
+vim.keymap.set("n", "<leader>wq", ":wqa!<CR>", { desc = "Save and quit all." })
 vim.keymap.set("n", "<leader>q", ":q!<CR>",
     { noremap = true, silent = true, desc = "Close current window without saving." })
 vim.keymap.set("n", "<C-q>", ":q!<CR>",
