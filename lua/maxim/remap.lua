@@ -12,8 +12,8 @@ vim.keymap.set("n", "<C-q>", ":q!<CR>",
     { noremap = true, silent = true, desc = "Close current window without saving." })
 
 -- Move lines up and down using J and K in visual mode
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected line down." })
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected line up." })
+vim.keymap.set("v", "K", ":m '<-2<CR>`<gv", { desc = "Move selected line up." })
+vim.keymap.set("v", "J", ":m '>+1<CR>`<gv", { desc = "Move selected line down." })
 
 -- Append next line to previous line using J in normal mode without moving the cursor
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Append next line to previous line." }) -- use ctrl+d and ctrl+u to scroll one third of the window while keeping the cursor centered

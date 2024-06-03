@@ -76,7 +76,6 @@ return {
             -- if the file does not match the running file, create a new run_python terminal and
             -- map the hotkeys. Kill the running terminal first if it exists
             if filename ~= file then
-                print("Running new file.")
                 file = filename
                 if run_python ~= nil then
                     run_python:shutdown()
