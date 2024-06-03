@@ -38,21 +38,21 @@ return {
                 map('n', '<leader>gth', function()
                     vim.cmd('Gitsigns toggle_numhl')
                     vim.cmd('Gitsigns toggle_signs')
-                end, { desc = 'Toggle number column and signcolumn highlighting. [Gitsigns]' })
+                end, { desc = 'Toggle number column and signcolumn highlighting.' })
 
                 -- turn on inline diff preview of hunk
                 map('n', '<leader>gd', function()
                     vim.cmd('Gitsigns preview_hunk_inline')
-                end, { desc = 'Preview hunk in floating window. [Gitsigns]' })
+                end, { desc = 'Preview hunk inline.' })
 
                 -- turn on git blame
                 map('n', '<leader>gtb', function()
                     vim.cmd('Gitsigns toggle_current_line_blame')
-                end, { desc = 'Toggle current line blame. [Gitsigns]' })
+                end, { desc = 'Toggle current line blame.' })
 
                 map('n', '<leader>gb', function()
                     vim.cmd('Gitsigns blame_line')
-                end, { desc = 'Preview git blame in a floating window. [Gitsigns]' })
+                end, { desc = 'Preview git blame in a floating window.' })
             end
         })
     end
