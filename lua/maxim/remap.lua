@@ -2,6 +2,8 @@ vim.g.mapleader = " "
 -- keymap for :Ex depreciated by Oil.nvim plugin
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'Project view' })
 
+vim.keymap.set("n", "<leader>qq", ":wqa<CR>", { desc = "Save and quit all." })
+
 -- Move lines up and down using J and K in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected line down." })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected line up." })
