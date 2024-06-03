@@ -22,8 +22,8 @@ return {
             },
             sections = {
                 lualine_a = { "mode" },
-                lualine_b = { "branch", "diagnostics" },
-                lualine_c = { "diff", "b:gitsigns_blame_line" },
+                lualine_b = { "diagnostics" },
+                lualine_c = { "branch", "diff", "b:gitsigns_blame_line" },
                 lualine_x = { "searchcount" },
                 lualine_y = { "location" },
                 lualine_z = { "progress" },
