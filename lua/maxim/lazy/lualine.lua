@@ -1,3 +1,12 @@
+local function file_modified()
+    if vim.bo.modified then
+        return "󰚰 Unsaved changes"
+    else
+        return ""
+    end
+end
+
+
 return {
     "nvim-lualine/lualine.nvim",
     requires = { "nvim-web-devicons" },
@@ -52,7 +61,7 @@ return {
                     },
                 },
                 lualine_x = {},
-                lualine_y = {},
+                lualine_y = { file_modified },
                 lualine_z = { "filetype" },
             },
             inactive_winbar = {

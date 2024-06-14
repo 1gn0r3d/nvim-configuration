@@ -3,12 +3,12 @@ vim.g.mapleader = " "
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'Project view' })
 
 -- Saving and quitting
-vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file." })
-vim.keymap.set("n", "<leader>qq", ":qa!<CR>", { desc = "Quit all." })
-vim.keymap.set("n", "<leader>wq", ":wqa!<CR>", { desc = "Save and quit all." })
-vim.keymap.set("n", "<leader>q", ":q!<CR>",
+vim.keymap.set("n", "<leader>w", "<CMD>w<CR>", { desc = "Save file." })
+vim.keymap.set("n", "<leader>qq", "<CMD>qa!<CR>", { desc = "Quit all." })
+vim.keymap.set("n", "<leader>wq", "<CMD>wqa!<CR>", { desc = "Save and quit all." })
+vim.keymap.set("n", "<leader>q", "<CMD>q!<CR>",
     { noremap = true, silent = true, desc = "Close current window without saving." })
-vim.keymap.set("n", "<C-q>", ":q!<CR>",
+vim.keymap.set("n", "<C-q>", "<CMD>q!<CR>",
     { noremap = true, silent = true, desc = "Close current window without saving." })
 
 -- Move lines up and down using J and K in visual mode
@@ -19,7 +19,7 @@ vim.keymap.set("v", "J", ":m '>+1<CR>`<gv", { desc = "Move selected line down." 
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Append next line to previous line." }) -- use ctrl+d and ctrl+u to scroll one third of the window while keeping the cursor centered
 
 -- Turn off highlights after search
-vim.keymap.set("n", "<leader>hl", ":noh<CR><CR>", { desc = "Remove search highlights." })
+vim.keymap.set("n", "<leader>hl", "<CMD>noh<CR><CR>", { desc = "Remove search highlights." })
 
 local function scroll(direction)
     local height = vim.api.nvim_win_get_height(0)
@@ -71,8 +71,8 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>",
 vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "~~ MAKE IT RAIN! ~~" })
 
 -- remaps for creating horizontal and vertical splits
-vim.keymap.set("n", "<leader>sh", ":split<CR>", { noremap = true, silent = true, desc = "Create horizontal split." })
-vim.keymap.set("n", "<leader>s", ":vsplit<CR>", { noremap = true, silent = true, desc = "Create vertical split." })
+vim.keymap.set("n", "<leader>sh", "<CMD>split<CR>", { noremap = true, silent = true, desc = "Create horizontal split." })
+vim.keymap.set("n", "<leader>s", "<CMD>vsplit<CR>", { noremap = true, silent = true, desc = "Create vertical split." })
 
 -- remaps for navigating horizontal and vertical splits
 vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true, desc = "Navigate to left split." })

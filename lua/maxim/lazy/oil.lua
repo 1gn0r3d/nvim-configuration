@@ -7,6 +7,7 @@ return {
                 "ctime",
                 "icon",
             },
+            skip_confirms_for_simple_edits = true,
             keymaps = {
                 ["<C-h>"] = false,
                 ["<C-l>"] = false,
@@ -14,6 +15,13 @@ return {
             },
             view_options = {
                 show_hidden = true,
+                natural_order = true,
+                is_always_hidden = function(name, _)
+                    return name == ".git"
+                end,
+            },
+            win_options = {
+                wrap = true,
             },
         }
         -- Setup a local function which opens the project view (parent directory) on a window to the right
@@ -39,10 +47,11 @@ return {
 
         -- Setup an autocommand which maps <leader>pv while inside an oil window
         -- to go back to the previous buffer.
-        local maxim = vim.api.nvim_create_augroup("maxim", {})
+        local oil_augroup = vim.api.nvim_create_augroup("oil_augroup", { clear = true })
         local autocmd = vim.api.nvim_create_autocmd
         autocmd("Filetype", {
             pattern = "oil",
+            group = oil_augroup,
             callback = function()
                 vim.api.nvim_buf_set_keymap(0, "n", "<leader>pv", ":b#<CR>",
                     { noremap = true, silent = true, desc = "Return to previously opened buffer." })
