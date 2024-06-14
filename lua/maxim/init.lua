@@ -3,7 +3,7 @@ require("maxim.remap")
 
 require("maxim.lazy_init")
 require("maxim.autocommands.vsplit_help")
-require("maxim.autocommands.vsplit_resizer")
+-- require("maxim.autocommands.vsplit_resizer")
 
 -- terminal settings
 local powershell_options = {

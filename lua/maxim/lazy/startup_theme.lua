@@ -80,14 +80,86 @@ return {
             [[                  `!988888888899fT|!^"'                            ]],
             [[                    `!9899fT|!^"'                                  ]],
             [[                      `!^"'                                        ]],
+            [[                                                                   ]],
+            [[                  N   E   O   V   I   M                            ]],
         }
-        local logo2_hl = {}
-        dashboard.section.header.val = logo
-        dashboard.section.header.opts.hl = logo_hl
+
+
+        --                        .,,uod8B8bou,,.
+        --               ..,uod8BBBBBBBBBBBBBBBBRPFT?l!i:.
+        --          ,=m8BBBBBBBBBBBBBBBRPFT?!||||||||||||||
+        --          !...:!TVBBBRPFT||||||||||!!^^""'   ||||
+        --          !.......:!?|||||!!^^""'            ||||
+        --          !.........||||                     ||||
+        --          !.........||||  ##                 ||||
+        --          !.........||||                     ||||
+        --          !.........||||                     ||||
+        --          !.........||||                     ||||
+        --          !.........||||                     ||||
+        --          `.........||||                    ,||||
+        --           .;.......||||               _.-!!|||||
+        --    .,uodWBBBBb.....||||       _.-!!|||||||||!:'
+        -- !YBBBBBBBBBBBBBBb..!|||:..-!!|||||||!iof68BBBBBb....
+        -- !..YBBBBBBBBBBBBBBb!!||||||||!iof68BBBBBBRPFT?!::   `.
+        -- !....YBBBBBBBBBBBBBBbaaitf68BBBBBBRPFT?!:::::::::     `.
+        -- !......YBBBBBBBBBBBBBBBBBBBRPFT?!::::::;:!^"`;:::       `.
+        -- !........YBBBBBBBBBBRPFT?!::::::::::^''...::::::;         iBBbo.
+        -- `..........YBRPFT?!::::::::::::::::::::::::;iof68bo.      WBBBBbo.
+        --   `..........:::::::::::::::::::::::;iof688888888888b.     `YBBBP^'
+        --     `........::::::::::::::::;iof688888888888888888888b.     `
+        --       `......:::::::::;iof688888888888888888888888888888b.
+        --         `....:::;iof688888888888888888888888888888888899fT!
+        --           `..::!8888888888888888888888888888888899fT|!^"'
+        --             `' !!988888888888888888888888899fT|!^"'
+        --                 `!!8888888888888888899fT|!^"'
+        --                   `!988888888899fT|!^"'
+        --                     `!9899fT|!^"'
+        --                       `!^"'
+        --
+        --                   N   E   O   V   I   M
+        local logo2_hl = {
+            { { "AlphaNeovimLogoGreen", 23, 38 }, },
+            { { "AlphaNeovimLogoGreen", 14, 47 }, },
+            { { "AlphaNeovimLogoBlue", 9, 10 },   { "AlphaNeovimLogoGreen", 10, 34 }, },
+            { { "AlphaNeovimLogoBlue", 9, 13 },   { "AlphaNeovimLogoGreen", 13, 24 }, },
+            { { "AlphaNeovimLogoBlue", 9, 17 },   { "AlphaNeovimLogoGreen", 17, 20 }, },
+            { { "AlphaNeovimLogoBlue", 9, 19 },   { "AlphaNeovimLogoGreen", 19, 19 }, },
+            { { "AlphaNeovimLogoBlue", 9, 19 },   { "AlphaNeovimLogoGreen", 19, 19 }, { "AlphaNeovimLogoGreen", 25, 27 }, },
+            { { "AlphaNeovimLogoBlue", 9, 19 },   { "AlphaNeovimLogoGreen", 19, 19 }, },
+            { { "AlphaNeovimLogoBlue", 9, 19 },   { "AlphaNeovimLogoGreen", 19, 19 }, },
+            { { "AlphaNeovimLogoBlue", 9, 19 },   { "AlphaNeovimLogoGreen", 19, 19 }, },
+            { { "AlphaNeovimLogoBlue", 9, 19 },   { "AlphaNeovimLogoGreen", 19, 19 }, },
+            { { "AlphaNeovimLogoBlue", 9, 19 },   { "AlphaNeovimLogoGreen", 19, 19 }, },
+            { { "AlphaNeovimLogoGreen", 10, 11 }, { "AlphaNeovimLogoBlue", 11, 19 },  { "AlphaNeovimLogoGreen", 19, 19 }, },
+            { { "AlphaNeovimLogoGreen", 3, 14 },  { "AlphaNeovimLogoBlue", 14, 19 },  { "AlphaNeovimLogoGreen", 19, 19 }, { "AlphaNeovimLogoGreen", 49, 68 }, },
+            { { "AlphaNeovimLogoBlue", 0, 1 },    { "AlphaNeovimLogoGreen", 1, 19 },  { "AlphaNeovimLogoBlue", 19, 19 },  { "AlphaNeovimLogoGreen", 19, 19 }, { "AlphaNeovimLogoGreen", 37, 48 }, { "AlphaNeovimLogoGreen", 49, 68 }, },
+            { { "AlphaNeovimLogoBlue", 0, 3 },    { "AlphaNeovimLogoGreen", 3, 19 },  { "AlphaNeovimLogoGreen", 30, 47 }, { "AlphaNeovimLogoGreen", 49, 68 }, },
+            { { "AlphaNeovimLogoBlue", 0, 5 },    { "AlphaNeovimLogoGreen", 5, 40 },  { "AlphaNeovimLogoGreen", 49, 68 }, },
+            { { "AlphaNeovimLogoBlue", 0, 7 },    { "AlphaNeovimLogoGreen", 7, 33 },  { "AlphaNeovimLogoBlue", 42, 46 },  { "AlphaNeovimLogoGreen", 49, 68 }, },
+            { { "AlphaNeovimLogoBlue", 0, 9 },    { "AlphaNeovimLogoGreen", 9, 26 },  { "AlphaNeovimLogoBlue", 35, 42 },  { "AlphaNeovimLogoGreen", 49, 68 }, },
+            { { "AlphaNeovimLogoBlue", 0, 11 },   { "AlphaNeovimLogoGreen", 11, 19 }, { "AlphaNeovimLogoGreen", 44, 68 }, },
+            { { "AlphaNeovimLogoBlue", 1, 14 },   { "AlphaNeovimLogoGreen", 37, 68 }, },
+            { { "AlphaNeovimLogoBlue", 3, 14 },   { "AlphaNeovimLogoGreen", 30, 68 }, },
+            { { "AlphaNeovimLogoBlue", 5, 14 },   { "AlphaNeovimLogoGreen", 23, 68 }, },
+            { { "AlphaNeovimLogoBlue", 7, 14 },   { "AlphaNeovimLogoGreen", 17, 68 }, },
+            { { "AlphaNeovimLogoBlue", 9, 14 },   { "AlphaNeovimLogoGreen", 16, 68 }, },
+            { { "AlphaNeovimLogoBlue", 11, 14 },  { "AlphaNeovimLogoGreen", 16, 68 }, },
+            { { "AlphaNeovimLogoGreen", 0, 68 }, },
+            { { "AlphaNeovimLogoGreen", 0, 68 }, },
+            { { "AlphaNeovimLogoGreen", 0, 68 }, },
+            { { "AlphaNeovimLogoGreen", 0, 68 }, },
+            {},
+            { { "AlphaNeovimLogoGreen", 0, 29 },  { "AlphaNeovimLogoBlue", 29, 68 }, },
+        }
+        dashboard.section.header.val = logo2
+        dashboard.section.header.opts.hl = logo2_hl
         dashboard.section.buttons.val = {
             dashboard.button("f", "  " .. "Find files", "<CMD>Telescope find_files<CR>"),
-            dashboard.button("p", "  " .. "Open project folder", "<CMD>Oil<CR>"),
-            dashboard.button("h", "  " .. "Open Harpoon quicklist",
+            -- dashboard.button("P", "  " .. "Open project folder", "<CMD>Oil<CR>"),
+            dashboard.button("p", "  " .. "Project folder",
+                "<CMD>lua require('oil').toggle_float()<CR>"
+            ),
+            dashboard.button("h", "  " .. "Harpoon quicklist",
                 "<CMD>lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())<CR>"
             ),
         }

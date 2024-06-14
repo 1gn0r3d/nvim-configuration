@@ -53,7 +53,9 @@ return {
             pattern = "oil",
             group = oil_augroup,
             callback = function()
-                vim.api.nvim_buf_set_keymap(0, "n", "<leader>pv", ":b#<CR>",
+                vim.api.nvim_buf_set_keymap(0, "n", "<ESC>", "<CMD>q<CR>",
+                    { noremap = true, silent = true, desc = "Close oil buffer." })
+                vim.api.nvim_buf_set_keymap(0, "n", "<leader>pv", "<CMD>b#<CR>",
                     { noremap = true, silent = true, desc = "Return to previously opened buffer." })
             end
         })
