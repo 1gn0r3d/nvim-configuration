@@ -15,6 +15,14 @@ vim.keymap.set("n", "<C-q>", "<CMD>q!<CR>",
 vim.keymap.set("v", "K", ":m '<-2<CR>`<gv", { desc = "Move selected line up." })
 vim.keymap.set("v", "J", ":m '>+1<CR>`<gv", { desc = "Move selected line down." })
 
+-- indent and outdent lines quickly
+vim.keymap.set('n', '<TAB>', '>>', { desc = "Indent selected lines." })
+vim.keymap.set('n', '<S-TAB>', '<<', { desc = "Outdent selected lines." })
+
+-- indent and outdent lines in visual mode
+vim.keymap.set('v', '<TAB>', '<S->>gv', { desc = "Indent selected lines." })
+vim.keymap.set('v', '<S-TAB>', '<S-<>gv', { desc = "Outdent selected lines." })
+
 -- Append next line to previous line using J in normal mode without moving the cursor
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Append next line to previous line." }) -- use ctrl+d and ctrl+u to scroll one third of the window while keeping the cursor centered
 
