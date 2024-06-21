@@ -142,14 +142,19 @@ return {
         dashboard.section.header.val = selected_logo.logo
         dashboard.section.header.opts.hl = selected_logo.colormap
         dashboard.section.buttons.val = {
-            dashboard.button("f", "  " .. "Find files", "<CMD>Telescope find_files<CR>"),
-            -- dashboard.button("P", "  " .. "Open project folder", "<CMD>Oil<CR>"),
-            dashboard.button("p", "  " .. "Project folder",
-                "<CMD>lua require('oil').toggle_float()<CR>"
-            ),
             dashboard.button("h", "  " .. "Harpoon quicklist",
                 "<CMD>lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())<CR>"
             ),
+            dashboard.button("p", "  " .. "Project folder",
+                "<CMD>lua require('oil').toggle_float()<CR>"
+            ),
+            dashboard.button("f", "  " .. "Find files", "<CMD>Telescope find_files<CR>"),
+            dashboard.button("s", "  " .. "Search in files", "<CMD>Telescope live_grep<CR>"),
+            dashboard.button("r", "  " .. "Recent files", "<CMD>Telescope oldfiles<CR>"),
+            dashboard.button("v", "  " .. "VimBeGood", "<CMD>VimBeGood<CR>"),
+            dashboard.button("b", "  " .. "Blackjack", "<CMD>BlackJackNewGame<CR>"),
+            dashboard.button("t", "  " .. "Tetris", "<CMD>Tetris<CR>"),
+            dashboard.button("q", "  " .. "Quit", "<CMD>qa!<CR>"),
         }
 
         for _, button in ipairs(dashboard.section.buttons.val) do
