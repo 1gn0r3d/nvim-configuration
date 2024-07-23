@@ -1,7 +1,18 @@
 -- Function to adjust the widths of the vertical splits
 local function adjust_window_width(window)
     -- Get the width from the colorcolumn setting
-    local colorcolumn_width = vim.o.colorcolumn or 80
+    local colorcolumn = vim.o.colorcolumn
+
+    if colorcolumn == "" then
+        colorcolumn = "80"
+    end
+
+    local colorcolumn_list = split(colorcolumn, ",")
+    for i, value in ipairs(colorcolumn_list) do
+        colorcolumn_list[i] = tonumber(value)
+    end
+
+    local colorcolumn_width = math.max(unpack(colorcolumn_list))
     local width = math.floor(colorcolumn_width * 1.05)
 
     -- Set the width of the bufnr
