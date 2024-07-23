@@ -53,7 +53,7 @@ return {
         -- create a helperfunction to check if an environment exits:
         local function virtual_environment_exists()
             local path = vim.fn.getcwd()
-            local environments = {"env", ".env", "venv", ".venv"}
+            local environments = { "env", ".env", "venv", ".venv" }
             -- loop through the directories in the path
             for name in vim.loop.fs_scandir(path) do
                 local stat = vim.loop.fs_stat(path .. "/" .. name)
@@ -67,6 +67,7 @@ return {
                 end
                 return nil
             end
+        end
 
         -- create some function for special terminals
         local Terminal = require("toggleterm.terminal").Terminal
