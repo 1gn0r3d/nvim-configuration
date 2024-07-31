@@ -5,6 +5,19 @@ require("maxim.lazy_init")
 require("maxim.autocommands.vsplit_help")
 -- require("maxim.autocommands.vsplit_resizer")
 
+-- python interpreter
+local function get_python_host_prog()
+    local python_path = 'C:\\Users\\MaximeVanrusselt\\scoop\\apps\\python\\current\\python.exe'
+    local venv_path = os.getenv('VIRTUAL_ENV')
+    if venv_path then
+        return venv_path .. '\\Scripts\\python.exe'
+    else
+        return python_path
+    end
+end
+vim.g.python3_host_prog = get_python_host_prog()
+vim.g.python3_host_timeout = 10
+
 -- terminal settings
 local powershell_options = {
     shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",

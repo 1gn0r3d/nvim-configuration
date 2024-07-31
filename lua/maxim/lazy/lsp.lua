@@ -75,6 +75,9 @@ return {
                         end,
                         capabilities = capabilities,
                         settings = {
+                            python = {
+                                pythonPath = vim.fn.exepath("python3")
+                            },
                             pylsp = {
                                 plugins = {
                                     pycodestyle = {
