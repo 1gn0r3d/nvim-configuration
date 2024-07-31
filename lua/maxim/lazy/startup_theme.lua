@@ -151,6 +151,7 @@ return {
             dashboard.button("f", "  " .. "Find files", "<CMD>Telescope find_files<CR>"),
             dashboard.button("s", "  " .. "Search in files", "<CMD>Telescope live_grep<CR>"),
             dashboard.button("r", "  " .. "Recent files", "<CMD>Telescope oldfiles<CR>"),
+            dashboard.button("g", "  " .. "Git view", "<CMD>Neogit<CR>"),
             dashboard.button("v", "  " .. "VimBeGood", "<CMD>VimBeGood<CR>"),
             dashboard.button("b", "  " .. "Blackjack", "<CMD>BlackJackNewGame<CR>"),
             dashboard.button("t", "  " .. "Tetris", "<CMD>Tetris<CR>"),

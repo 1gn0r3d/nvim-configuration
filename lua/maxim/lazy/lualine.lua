@@ -9,7 +9,17 @@ end
 local function file_or_foldername()
     local oil = require('oil')
     if vim.bo.filetype == 'oil' then
-        return oil.get_current_dir()
+        local foldername = oil.get_current_dir()
+        local split_name = vim.fn.split(foldername, "\\")
+        local short_name = "..\\"
+        for i = #split_name - 3, #split_name do
+            if i == 1 then
+                short_name = ""
+            end
+            short_name = short_name .. split_name[i] .. "\\"
+        end
+        return short_name
+        -- return oil.get_current_dir()
     else
         return vim.fn.expand("%:t")
     end
