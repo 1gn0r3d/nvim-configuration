@@ -1,3 +1,22 @@
+-- create a helperfunction to check if an environment exits:
+local function virtual_environment_exists()
+    local path = vim.fn.getcwd()
+    local environments = { "env", ".env", "venv", ".venv" }
+    local directories = vim.fn.globpath(path, "*", 0, 1)
+
+    -- loop through the directories in the path
+    for _, dir in ipairs(directories) do
+        local name = vim.fn.fnamemodify(dir, ":t")
+        -- check if the directory is a virtual environment
+        for _, env in ipairs(environments) do
+            if name == env and vim.fn.isdirectory(dir) then
+                return name
+            end
+        end
+    end
+    return nil
+end
+
 return {
     "akinsho/toggleterm.nvim",
     config = function()
@@ -12,6 +31,12 @@ return {
                 end
             end,
             open_mapping = [[<c-\>]],
+            on_open = function(term)
+                local env = virtual_environment_exists()
+                if env then
+                    term:send(string.format(".\\%s\\Scripts\\activate", env))
+                end
+            end,
             terminal_mappings = true,
             hide_numbers = true,
             shade_terminals = true,
@@ -50,70 +75,5 @@ return {
                 map_terminal_hotkeys(e)
             end
         })
-        -- create a helperfunction to check if an environment exits:
-        local function virtual_environment_exists()
-            local path = vim.fn.getcwd()
-            local environments = { "env", ".env", "venv", ".venv" }
-            -- loop through the directories in the path
-            for name in vim.loop.fs_scandir(path) do
-                local stat = vim.loop.fs_stat(path .. "/" .. name)
-                if stat and stat.type == "directory" then
-                    -- check if the directory is a virtual environment
-                    for _, env in ipairs(environments) do
-                        if name == env then
-                            return path .. "/" .. name
-                        end
-                    end
-                end
-                return nil
-            end
-        end
-
-        -- create some function for special terminals
-        local Terminal = require("toggleterm.terminal").Terminal
-        local anaconda = Terminal:new({ cmd = "~/anaconda3/Scripts/activate.bat;~/anaconda3/python.exe", hidden = true })
-        function _ANACONDA_TOGGLE()
-            anaconda:toggle()
-            map_terminal_hotkeys(anaconda)
-        end
-
-        local python = Terminal:new({ cmd = "python3", hidden = true })
-        function _PYTHON_TOGGLE()
-            python:toggle()
-            map_terminal_hotkeys(python)
-        end
-
-        local file = nil
-        local run_python = nil
-        function _RUN_PYTHON_TOGGLE()
-            local filename = vim.fn.expand('%')
-            -- stop if the file is not a python file
-            if not filename:match("%.py$") then
-                return
-            end
-            -- if the file does not match the running file, create a new run_python terminal and
-            -- map the hotkeys. Kill the running terminal first if it exists
-            if filename ~= file then
-                file = filename
-                if run_python ~= nil then
-                    run_python:shutdown()
-                end
-                if virtual_environment_exists() then
-                    local cmd = "source " .. virtual_environment_exists() .. "/bin/activate;python.exe '" .. file .. "'"
-                    run_python = Terminal:new({ cmd = cmd, direction = 'vertical', hidden = true })
-                else
-                    local cmd = "~\\anaconda3\\Scripts\\activate.bat;~\\anaconda3\\python.exe '" .. file .. "'"
-                    run_python = Terminal:new({ cmd = cmd, direction = 'vertical', hidden = true })
-                end
-                map_terminal_hotkeys(run_python)
-            end
-            -- if a run python terminal exists
-            if run_python ~= nil then
-                run_python:toggle()
-            end
-        end
-
-        vim.keymap.set("n", '<leader>xp', _RUN_PYTHON_TOGGLE,
-            { noremap = true, desc = 'Execute python file in split terminal.' })
     end,
 }
