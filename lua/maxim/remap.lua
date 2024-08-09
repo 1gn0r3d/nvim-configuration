@@ -93,3 +93,6 @@ vim.keymap.set('t', '<Esc>', "<C-\\><C-n>", { desc = "Exit terminal." })
 
 -- minimise terminal split
 vim.keymap.set('n', '<C-g>', "3<C-w>_", { desc = "Minimise terminal split." })
+
+-- go back after jumping:
+vim.keymap.set('n', 'gs', '<C-o>', { desc = "Go back after jumping." })
