@@ -53,14 +53,14 @@ return {
         end, { desc = "Open harpoon quicktoggle list." })
 
         -- Set hotkeys for the first four spots in the quicktoggle list
-        vim.keymap.set("n", "<C-i>", function()
+        vim.keymap.set("n", "<C-o>", function()
             harpoon:list():prev()
             -- harpoon:list():select(1)
-        end, { desc = "Previous harpoon quicktoggle list item." })
-        vim.keymap.set("n", "<C-o>", function()
+        end, { desc = "Previous harpoon quicktoggle list item.", noremap = true })
+        vim.keymap.set("n", "<C-p>", function()
             harpoon:list():next()
             -- harpoon:list():select(2)
-        end, { desc = "Next harpoon quicktoggle list item." })
+        end, { desc = "Next harpoon quicktoggle list item.", noremap = true })
 
         -- Setup autocommands to change the cwd when the directory is switched (for session manager)
         -- Autocommand is not working yet

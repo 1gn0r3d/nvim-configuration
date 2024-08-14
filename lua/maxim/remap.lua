@@ -1,4 +1,7 @@
 vim.g.mapleader = " "
+vim.g.maplocalleader = ' '
+vim.api.nvim_set_keymap("n", "<C-i>", "<C-i>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Tab>", "<Cmd>bnext<CR>", { noremap = true, silent = true })
 -- keymap for :Ex depreciated by Oil.nvim plugin
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'Project view' })
 
