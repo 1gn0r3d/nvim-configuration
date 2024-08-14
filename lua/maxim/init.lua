@@ -3,6 +3,7 @@ require("maxim.remap")
 
 require("maxim.lazy_init")
 require("maxim.autocommands.vsplit_help")
+require("maxim.autocommands.open_nvim_config")
 -- require("maxim.autocommands.vsplit_resizer")
 
 -- python interpreter
