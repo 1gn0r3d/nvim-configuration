@@ -19,6 +19,9 @@ scoop install make
 ### Install gcc
 ~~~
 scoop install gcc
+
+If scoop is not working for some reason, it can be installed through MSYS2:
+pacman -S base-devel gcc
 ~~~
 ### Install fzf
 ~~~
