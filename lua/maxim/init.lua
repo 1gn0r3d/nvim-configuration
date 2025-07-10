@@ -5,6 +5,7 @@ require("maxim.lazy_init")
 require("maxim.autocommands.vsplit_help")
 require("maxim.autocommands.open_nvim_config")
 -- require("maxim.autocommands.vsplit_resizer")
+require("maxim.jupyter_notebooks.jupyter_notebook")
 
 -- python interpreter
 local function get_python_host_prog()
@@ -18,6 +19,7 @@ local function get_python_host_prog()
 end
 vim.g.python3_host_prog = get_python_host_prog()
 vim.g.python3_host_timeout = 10
+
 
 -- terminal settings
 local powershell_options = {
@@ -46,7 +48,8 @@ autocmd('LspAttach', {
             { buffer = e.buf, desc = "Hover and view documentation." })
         vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end,
             { buffer = e.buf, desc = "Search workspace symbols." })
-        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end,
+        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float(nil, { source = true }) end,
+        -- vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end,
             { buffer = e.buf, desc = "Open floating diagnostics." })
         vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end,
             { buffer = e.buf, desc = "Open code actions." })
@@ -68,5 +71,21 @@ autocmd('LspAttach', {
             vim.diagnostic.goto_prev(
                 { severity = vim.diagnostic.severity.ERROR })
         end, { buffer = e.buf, desc = "Go to previous error." })
+    end
+})
+
+autocmd('FileType', {
+    group = maxim,
+    pattern = "python",
+    callback = function()
+        -- keymap to create docstring
+        vim.keymap.set('i', '"""', '"""<CR>"""<ESC>O',
+            { noremap = true, silent = true })
+        -- keymap to create a new function
+        vim.keymap.set('i', 'def ', 'def ()->:<CR>...<ESC>k0f(i',
+            { noremap = true, silent = true })
+        -- keymap to create a new class
+        vim.keymap.set('i', 'class ', 'class :<CR>...<ESC>k0f:i',
+            { noremap = true, silent = true })
     end
 })

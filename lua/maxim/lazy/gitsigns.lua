@@ -1,5 +1,6 @@
 return {
     "lewis6991/gitsigns.nvim",
+    version = "v0.9.0", -- could not resolve later breaking changes
     config = function()
         require('gitsigns').setup({
             -- Setup highlighting: use rownumbers rather than signcolumn.
@@ -53,6 +54,14 @@ return {
                 map('n', '<leader>gb', function()
                     vim.cmd('Gitsigns blame_line')
                 end, { desc = 'Preview git blame in a floating window.' })
+
+
+                -- -- this snippet disables gitsigns for the jupytext plugin (incompatible)
+                -- if vim.api.nvim_buff_get_name(bufnr):match('%.ipynb$') then
+                --     -- Do not attach for .ipynb file, since these are converted
+                --     -- with jupytext.nvim
+                --     return false
+                -- end
             end
         })
     end

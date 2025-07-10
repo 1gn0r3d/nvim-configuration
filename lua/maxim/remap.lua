@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = ' '
-vim.api.nvim_set_keymap("n", "<C-i>", "<C-i>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<C-i>", "<C-i>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Tab>", "<Cmd>bnext<CR>", { noremap = true, silent = true })
 -- keymap for :Ex depreciated by Oil.nvim plugin
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'Project view' })
@@ -35,8 +35,8 @@ vim.keymap.set("n", "<leader>hl", "<CMD>noh<CR><CR>", { desc = "Remove search hi
 local function scroll(direction)
     local height = vim.api.nvim_win_get_height(0)
     local third = math.floor(height / 3)
-    print("height: ", height)
-    print(third)
+    -- print("height: ", height)
+    -- print(third)
     vim.cmd("normal!" .. third .. direction .. "zz")
 end
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -62,9 +62,6 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copies entire line to system
 
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Deletes without yanking text." })
 
--- This is going to get me cancelled
-vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Get out of insert mode using ctrl+c" })
-
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "Format code layout." })
 
@@ -79,7 +76,8 @@ vim.keymap.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left>
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>",
     { silent = true, desc = "Make the current file executable. (Linux)" })
 
-vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "~~ MAKE IT RAIN! ~~" })
+vim.keymap.set("n", "<leader>cm", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "~~ MAKE IT RAIN! ~~" })
+vim.keymap.set("n", "<leader>cg", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "~~ Game of life! ~~" })
 
 -- remaps for creating horizontal and vertical splits
 vim.keymap.set("n", "<leader>sh", "<CMD>split<CR>", { noremap = true, silent = true, desc = "Create horizontal split." })
@@ -99,3 +97,8 @@ vim.keymap.set('n', '<C-g>', "3<C-w>_", { desc = "Minimise terminal split." })
 
 -- go back after jumping:
 vim.keymap.set('n', 'gs', '<C-o>', { desc = "Go back after jumping." })
+
+-- insert an enter at cursor from normal mode
+-- vim.keymap.set('n', '<C-i>', 'i<CR><Esc>', { desc = "Insert a newline from normal mode at cursor." })
+
+-- python specific keymaps are initialised in an autocommand in init.lua
