@@ -14,6 +14,9 @@ vim.keymap.set("n", "<leader>q", "<CMD>q!<CR>",
 vim.keymap.set("n", "<C-q>", "<CMD>q!<CR>",
     { noremap = true, silent = true, desc = "Close current window without saving." })
 
+-- Remap esc to ctrl+c
+vim.keymap.set({ "i", "v" }, "<C-c>", "<Esc>", { desc = "Remap ctrl+c to esc." })
+
 -- Move lines up and down using J and K in visual mode
 vim.keymap.set("v", "K", ":m '<-2<CR>`<gv", { desc = "Move selected line up." })
 vim.keymap.set("v", "J", ":m '>+1<CR>`<gv", { desc = "Move selected line down." })
@@ -79,9 +82,9 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>",
 vim.keymap.set("n", "<leader>cm", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "~~ MAKE IT RAIN! ~~" })
 vim.keymap.set("n", "<leader>cg", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "~~ Game of life! ~~" })
 
--- remaps for creating horizontal and vertical splits
+-- remaps for creating horizontal and vertical splits (partially taken over by windowcolumn.nvim)
 vim.keymap.set("n", "<leader>sh", "<CMD>split<CR>", { noremap = true, silent = true, desc = "Create horizontal split." })
-vim.keymap.set("n", "<leader>s", "<CMD>vsplit<CR>", { noremap = true, silent = true, desc = "Create vertical split." })
+-- vim.keymap.set("n", "<leader>s", "<CMD>vsplit<CR>", { noremap = true, silent = true, desc = "Create vertical split." })
 
 -- remaps for navigating horizontal and vertical splits
 vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true, desc = "Navigate to left split." })

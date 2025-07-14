@@ -49,7 +49,7 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end,
             { buffer = e.buf, desc = "Search workspace symbols." })
         vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float(nil, { source = true }) end,
-        -- vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end,
+            -- vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end,
             { buffer = e.buf, desc = "Open floating diagnostics." })
         vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end,
             { buffer = e.buf, desc = "Open code actions." })

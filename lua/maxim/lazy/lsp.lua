@@ -1,4 +1,4 @@
-return{
+return {
     "neovim/nvim-lspconfig",
     dependencies = {
         "williamboman/mason.nvim",
@@ -7,6 +7,7 @@ return{
         "hrsh7th/nvim-cmp",
         "onsails/lspkind.nvim",
         "L3MON4D3/LuaSnip",
+        "saadparwaiz1/cmp_luasnip",
         "j-hui/fidget.nvim",
         -- Next modules enable suggestions and autocompletion
         -- -in buffer
@@ -52,10 +53,10 @@ return{
         })
 
         -- Ignore:
-        -- Warnings: binary operator before or after line break 
-        local ignore_python_warnings = { 
-            "E402",--Error lines of code before imports
-            "W503",--Line break before binary operator
+        -- Warnings: binary operator before or after line break
+        local ignore_python_warnings = {
+            "E402", --Error lines of code before imports
+            "W503", --Line break before binary operator
             -- "W504",--Line break after binary operator
         }
 
@@ -98,7 +99,7 @@ return{
             settings = {
                 Lua = {
                     runtime = { version = "LuaJIT" },
-                    diagnostics = { 
+                    diagnostics = {
                         -- globals = { "vim" } ,
                         globals = { "vim", "it", "describe", "before_each", "after_each" },
                     },
@@ -115,12 +116,18 @@ return{
         local cmp = require("cmp")
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
         local lspkind = require("lspkind")
+        local luasnip = require("luasnip")
+        -- path = "./lua/maxim/snippets"
+        -- abs_path = vim.fn.fnamemodify(path, ":p")
+        -- vim.notify("Path: " .. abs_path, vim.log.levels.Info)
+        require("luasnip.loaders.from_lua").load({ paths = "./lua/maxim/snippets" })
+        -- vim.notify("Snippets loaded from lsp configuration.", vim.log.levels.INFO)
 
         cmp.setup({
             -- This sets up a snippet for autocompletion of a function in lua
             snippet = {
                 expand = function(args)
-                    require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                    luasnip.lsp_expand(args.body) -- For `luasnip` users.
                 end,
             },
             -- This sets up the hotkeys for navigating and selecting
@@ -133,25 +140,42 @@ return{
             }),
             -- This indicates the sources which can be used for autocompletion
             sources = cmp.config.sources({
-                { name = 'copilot' },
-                { name = 'cmp_nvim_lsp' },
+                { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
             }, {
                 { name = 'buffer' },
             }),
-            -- Set up the formatting, lspkind adds symbols 
+
+            -- Set up the formatting, lspkind adds symbols
             formatting = {
-                format = lspkind.cmp_format({
-                    mode = 'symbol',
-                    maxwidth = {
-                        menu = 50,
-                        abbr = 50,
-                    },
-                    symbol_map = { Copilot = "" },
-                    elipsis_char = '...',
-                    show_labelDetails = true,
-                }),
+                format = function(entry, vim_item)
+                    -- Add symbol & text
+                    vim_item.kind = lspkind.symbolic(vim_item.kind, { mode = "symbol_text" })
+
+                    -- Add source name (e.g. [LSP], [Snippet], [Buffer])
+                    vim_item.menu = ({
+                        nvim_lsp = "[LSP]",
+                        luasnip = "[Snippet]",
+                        buffer = "[Buffer]",
+                        path = "[Path]",
+                        nvim_lua = "[Lua]"
+                    })[entry.source.name] or ("[" .. entry.source.name .. "]")
+
+                    return vim_item
+                end
             }
+            -- formatting = {
+            --     format = lspkind.cmp_format({
+            --         mode = 'symbol',
+            --         maxwidth = {
+            --             menu = 50,
+            --             abbr = 50,
+            --         },
+            --         symbol_map = { Copilot = "" },
+            --         elipsis_char = '...',
+            --         show_labelDetails = true,
+            --     }),
+            -- }
         })
     end,
 }
