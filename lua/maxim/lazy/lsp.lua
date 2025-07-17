@@ -112,6 +112,25 @@ return {
             },
         })
 
+        -- This part sets up the hover window formatting:
+        vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover,
+            {
+                border = "rounded", -- adds a border around the window
+                max_width = 80,
+                max_height = 20,
+            })
+        -- get colors from theme
+        local colors = require("maxim.lualine_theme.colors")
+        -- set up colors for general floating windows (harpoon, telescope)
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = colors['surface0'], })
+        vim.api.nvim_set_hl(0, "FloatBorder", { bg = colors['surface0'], })
+        -- set up colors of completion menu
+        vim.api.nvim_set_hl(0, "Pmenu", { bg = colors['surface1'] })
+        vim.api.nvim_set_hl(0, "PmenuSel", { bg = colors['surface2'] })
+
+        -- set up colors of documentation popup
+        vim.api.nvim_set_hl(0, "CmpDocumentation", { bg = colors['surface1'] })
+
         -- This part handles autocompletion
         local cmp = require("cmp")
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -148,17 +167,23 @@ return {
 
             -- Set up the formatting, lspkind adds symbols
             formatting = {
+                window = {
+                    documentation = cmp.config.window.bordered(),
+
+                },
                 format = function(entry, vim_item)
                     -- Add symbol & text
-                    vim_item.kind = lspkind.symbolic(vim_item.kind, { mode = "symbol_text" })
+                    vim_item.kind = lspkind.symbolic(vim_item.kind, {
+                        mode = "symbol_text"
+                    })
 
                     -- Add source name (e.g. [LSP], [Snippet], [Buffer])
                     vim_item.menu = ({
                         nvim_lsp = "[LSP]",
                         luasnip = "[Snippet]",
-                        buffer = "[Buffer]",
+                        nvim_lua = "[Lua]",
                         path = "[Path]",
-                        nvim_lua = "[Lua]"
+                        buffer = "[Buffer]",
                     })[entry.source.name] or ("[" .. entry.source.name .. "]")
 
                     return vim_item

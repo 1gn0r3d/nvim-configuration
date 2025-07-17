@@ -2,7 +2,7 @@ require("maxim.set")
 require("maxim.remap")
 
 require("maxim.lazy_init")
-require("maxim.autocommands.vsplit_help")
+-- require("maxim.autocommands.vsplit_help")
 require("maxim.autocommands.open_nvim_config")
 -- require("maxim.autocommands.vsplit_resizer")
 require("maxim.jupyter_notebooks.jupyter_notebook")
@@ -74,18 +74,18 @@ autocmd('LspAttach', {
     end
 })
 
-autocmd('FileType', {
-    group = maxim,
-    pattern = "python",
-    callback = function()
-        -- keymap to create docstring
-        vim.keymap.set('i', '"""', '"""<CR>"""<ESC>O',
-            { noremap = true, silent = true })
-        -- keymap to create a new function
-        vim.keymap.set('i', 'def ', 'def ()->:<CR>...<ESC>k0f(i',
-            { noremap = true, silent = true })
-        -- keymap to create a new class
-        vim.keymap.set('i', 'class ', 'class :<CR>...<ESC>k0f:i',
-            { noremap = true, silent = true })
-    end
-})
+-- autocmd('FileType', {
+--     group = maxim,
+--     pattern = "python",
+--     callback = function()
+--         -- keymap to create docstring
+--         vim.keymap.set('i', '"""', '"""<CR>"""<ESC>O',
+--             { noremap = true, silent = true })
+--         -- keymap to create a new function
+--         vim.keymap.set('i', 'def ', 'def ()->:<CR>...<ESC>k0f(i',
+--             { noremap = true, silent = true })
+--         -- keymap to create a new class
+--         vim.keymap.set('i', 'class ', 'class :<CR>...<ESC>k0f:i',
+--             { noremap = true, silent = true })
+--     end
+-- })

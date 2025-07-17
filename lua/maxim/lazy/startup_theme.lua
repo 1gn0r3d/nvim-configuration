@@ -157,7 +157,7 @@ return {
             dashboard.button("b", "  " .. "Blackjack", "<CMD>BlackJackNewGame<CR>"),
             dashboard.button("k", "  " .. "Killer Sheep", "<CMD>KillKillKill<CR>"),
             dashboard.button("m", "  " .. "Minesweeper", "<CMD>Nvimesweeper<CR>"),
-            dashboard.button("s", "  " .. "Sudoku", "<CMD>Sudoku<CR>"),
+            dashboard.button("u", "  " .. "Sudoku", "<CMD>Sudoku<CR>"),
             dashboard.button("t", "  " .. "Tetris", "<CMD>Tetris<CR>"),
             dashboard.button("q", "  " .. "Quit", "<CMD>qa!<CR>"),
         }
