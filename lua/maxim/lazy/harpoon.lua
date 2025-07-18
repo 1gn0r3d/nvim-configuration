@@ -33,6 +33,7 @@ return {
             }):find()
         end
 
+
         vim.keymap.set("n", "<leader>E", function()
             toggle_telescope(harpoon:list())
         end, { desc = "Open harpoon quicktogglelist in telescope." })

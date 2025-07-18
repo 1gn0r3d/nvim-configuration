@@ -16,6 +16,10 @@ return {
         "hrsh7th/cmp-path",
         -- -- -on commandline
         -- "hrsh7th/cmp-cmdline",
+
+        -- try out blink for extended capabilities.
+        "saghen/blink.cmp"
+
     },
     -- event = "VeryLazy",
     event = { "BufReadPre", "BufNewFile" },
@@ -25,13 +29,15 @@ return {
 
         -- This section sets up default settings to enable completion, etc
         local cmp_lsp = require("cmp_nvim_lsp")
-        local capabilities = vim.tbl_deep_extend(
-            "force",
-            {},
-            -- Default support (go to definition, completion, hover)
-            vim.lsp.protocol.make_client_capabilities(),
-            -- Snippet support, insert/replace, etc
-            cmp_lsp.default_capabilities())
+        -- local capabilities = vim.tbl_deep_extend(
+        --     "force",
+        --     {},
+        --     -- Default support (go to definition, completion, hover)
+        --     vim.lsp.protocol.make_client_capabilities(),
+        --     -- Snippet support, insert/replace, etc
+        --     cmp_lsp.default_capabilities())
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
+
 
         -- Set up navic to get information of the lsp in lualine
         local navic = require("nvim-navic")
@@ -119,17 +125,18 @@ return {
                 max_width = 80,
                 max_height = 20,
             })
+
         -- get colors from theme
         local colors = require("maxim.lualine_theme.colors")
         -- set up colors for general floating windows (harpoon, telescope)
-        vim.api.nvim_set_hl(0, "NormalFloat", { bg = colors['surface0'], })
-        vim.api.nvim_set_hl(0, "FloatBorder", { bg = colors['surface0'], })
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = colors.base, })
+        vim.api.nvim_set_hl(0, "FloatBorder", { bg = colors.base, })
         -- set up colors of completion menu
-        vim.api.nvim_set_hl(0, "Pmenu", { bg = colors['surface1'] })
-        vim.api.nvim_set_hl(0, "PmenuSel", { bg = colors['surface2'] })
-
-        -- set up colors of documentation popup
-        vim.api.nvim_set_hl(0, "CmpDocumentation", { bg = colors['surface1'] })
+        vim.api.nvim_set_hl(0, "Pmenu", { bg = colors.base })
+        vim.api.nvim_set_hl(0, "PmenuSel", {
+            bg = colors.mauve,
+            fg = colors.crust,
+        })
 
         -- This part handles autocompletion
         local cmp = require("cmp")
@@ -142,65 +149,55 @@ return {
         require("luasnip.loaders.from_lua").load({ paths = "./lua/maxim/snippets" })
         -- vim.notify("Snippets loaded from lsp configuration.", vim.log.levels.INFO)
 
-        cmp.setup({
-            -- This sets up a snippet for autocompletion of a function in lua
-            snippet = {
-                expand = function(args)
-                    luasnip.lsp_expand(args.body) -- For `luasnip` users.
-                end,
-            },
-            -- This sets up the hotkeys for navigating and selecting
-            -- autocompletion setups
-            mapping = cmp.mapping.preset.insert({
-                ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-                ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-                ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-                ['<C-Space>'] = cmp.mapping.complete(),
-            }),
-            -- This indicates the sources which can be used for autocompletion
-            sources = cmp.config.sources({
-                { name = 'nvim_lsp' },
-                { name = 'luasnip' }, -- For luasnip users.
-            }, {
-                { name = 'buffer' },
-            }),
+        -- This next section is my nvim-cmp setup, but currently i am migrating to blink
 
-            -- Set up the formatting, lspkind adds symbols
-            formatting = {
-                window = {
-                    documentation = cmp.config.window.bordered(),
-
-                },
-                format = function(entry, vim_item)
-                    -- Add symbol & text
-                    vim_item.kind = lspkind.symbolic(vim_item.kind, {
-                        mode = "symbol_text"
-                    })
-
-                    -- Add source name (e.g. [LSP], [Snippet], [Buffer])
-                    vim_item.menu = ({
-                        nvim_lsp = "[LSP]",
-                        luasnip = "[Snippet]",
-                        nvim_lua = "[Lua]",
-                        path = "[Path]",
-                        buffer = "[Buffer]",
-                    })[entry.source.name] or ("[" .. entry.source.name .. "]")
-
-                    return vim_item
-                end
-            }
-            -- formatting = {
-            --     format = lspkind.cmp_format({
-            --         mode = 'symbol',
-            --         maxwidth = {
-            --             menu = 50,
-            --             abbr = 50,
-            --         },
-            --         symbol_map = { Copilot = "" },
-            --         elipsis_char = '...',
-            --         show_labelDetails = true,
-            --     }),
-            -- }
-        })
+        -- cmp.setup({
+        --     -- This sets up a snippet for autocompletion of a function in lua
+        --     snippet = {
+        --         expand = function(args)
+        --             luasnip.lsp_expand(args.body) -- For `luasnip` users.
+        --         end,
+        --     },
+        --     -- This sets up the hotkeys for navigating and selecting
+        --     -- autocompletion setups
+        --     mapping = cmp.mapping.preset.insert({
+        --         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+        --         ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+        --         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+        --         ['<C-Space>'] = cmp.mapping.complete(),
+        --     }),
+        --     -- This indicates the sources which can be used for autocompletion
+        --     sources = cmp.config.sources({
+        --         { name = 'nvim_lsp' },
+        --         { name = 'luasnip' }, -- For luasnip users.
+        --     }, {
+        --         { name = 'buffer' },
+        --     }),
+        --
+        --     -- Set up the formatting, lspkind adds symbols
+        --     formatting = {
+        --         window = {
+        --             documentation = cmp.config.window.bordered(),
+        --
+        --         },
+        --         format = function(entry, vim_item)
+        --             -- Add symbol & text
+        --             vim_item.kind = lspkind.symbolic(vim_item.kind, {
+        --                 mode = "symbol_text"
+        --             })
+        --
+        --             -- Add source name (e.g. [LSP], [Snippet], [Buffer])
+        --             vim_item.menu = ({
+        --                 nvim_lsp = "[LSP]",
+        --                 luasnip = "[Snippet]",
+        --                 nvim_lua = "[Lua]",
+        --                 path = "[Path]",
+        --                 buffer = "[Buffer]",
+        --             })[entry.source.name] or ("[" .. entry.source.name .. "]")
+        --
+        --             return vim_item
+        --         end
+        --     }
+        -- })
     end,
 }

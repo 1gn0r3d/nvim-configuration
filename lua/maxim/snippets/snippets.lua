@@ -214,11 +214,12 @@ ls.add_snippets("python", {
     )),
 })
 
+
 -- lua snippets
 ls.add_snippets("lua", {
     ls.parser.parse_snippet("local function", "local $1 = function($2)\n    $0\n end"),
     s("req",
-        fmt([[local {} = require "{}"]], {
+        fmt([[local {} = require("{}")]], {
             f(function(import_name)
                 local parts = vim.split(import_name[1][1], ".", true)
                 return parts[#parts] or ""

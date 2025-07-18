@@ -5,13 +5,16 @@ return {
         require("nvim-treesitter.configs").setup({
             -- A list of parser names, or "all"
             ensure_installed = {
-                -- "vimdoc",
-                -- "lua",
+                "lua",
+                "python",
+                "csv",
+                "latex",
+                "vimdoc",
                 -- "go",
-                -- "python",
                 -- "jsdoc",
                 -- "bash",
             },
+            ignore_install = { "javascript", "java" },
 
             -- Install parsers synchronously (only applied to `ensure_installed`)
             sync_install = false,
@@ -34,6 +37,7 @@ return {
                 -- Instead of true it can also be a list of languages
                 additional_vim_regex_highlighting = { "markdown" },
             },
+            modules = {},
         })
 
         local treesitter_parser_config = require("nvim-treesitter.parsers").get_parser_configs()
