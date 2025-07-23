@@ -5,7 +5,7 @@ return {
         ft = { "tex", "cls" },
         init = function()
             vim.g.vimtex_view_general_viewer = 'SumatraPDF'
-            vim.g.vimtex_view_general_options = [[--reuse-instance --forward-search @tex @line @pdf]]
+            vim.g.vimtex_view_general_options = [[--reuse-instance --forward-search @tex @pdf]]
             vim.g.vimtex_view_general_options_latexmk = [[--reuse-instance]]
             vim.g.vimtex_quickfix_ignore_filters = {
                 'Underfull \\\\hbox',
