@@ -121,36 +121,59 @@ end
 
 
 local treesitter_docstring_handler = {
-    full_docstring = function()
-        return t ""
+    full = function(query, node)
+        print("query (from inside full function)" .. vim.inspect(query))
+        return sn(nil, { i(1, "Full text goes here") }, {
+            node_ext_opts = {
+                active = {
+                    virt_text = { { "<- Default value (for full text)", "GruvboxOrange" } }
+                }
+            }
+        })
     end,
-    full_docstring_with_timestamp = function()
-        return t ""
+    timestamp = function(query, node)
+        print("query (from inside timestamp function)" .. vim.inspect(query))
+        -- for id, capture in query:iter_captures() do
+        --     print("ID: " .. query[id])
+        --     print("capture type: " .. capture:type())
+        -- end
+        return sn(nil, { i(1, "Timestamp text goes here") }, {
+            node_ext_opts = {
+                active = {
+                    virt_text = { { "<- Default value (for timestamp text)", "GruvboxOrange" } }
+                }
+            }
+        })
     end,
-    simple_docstring = function(query)
-        for id, capture in query:iter_captures() do
-            print("ID: " .. query[id])
-            print("capture type: " .. capture:type())
+    simple = function(query, node)
+        print("query (from inside simple function)" .. vim.inspect(query))
+        print("node (from inside simple function)" .. vim.inspect(node))
+        for id, capture in query:iter_captures(node, 0) do
             if capture:type() == "identifier" then
-                return sn(
-                    t('"""\n'),
-                    t("Function" .. capture:type()), i(1, "(description)"),
-                    t('"""\n')
-                )
+                print("ID: " .. vim.inspect(query[id]))
+                print("capture type: " .. vim.inspect(capture:type()))
+                return sn(nil, {
+                    -- t({ '"""\n' }),
+                    -- t("Function" .. vim.inspect(capture:type())), i(1, "(description)"),
+                    -- t("Function"), i(1, "(description)"),
+                    -- t({ '"""\n' }) }, {
+                    -- i(1, "(description)") }, {
+                    i(1, "Function" .. vim.inspect(capture:type())),
+                    -- i(1, "(description)"),
+                    node_ext_opts = {
+                        active = {
+                            virt_text = { { "<- Default value (for full text)", "GruvboxOrange" } }
+                        }
+                    }
+                })
             end
         end
     end,
-    no_docstring = function()
-        return t ""
-    end
 }
 
 local function treesitter_python_create_docstring(info)
     local function_node_types = {
         function_definition = true,
-        -- function_declaration = true,
-        -- method_declaration = true,
-        -- func_literal = true,
     }
 
     -- Find the first function node that is a parent of the cursor
@@ -165,50 +188,74 @@ local function treesitter_python_create_docstring(info)
     -- Exit if no match
     if not node then
         vim.notify("Treesitter Error: Not inside a function.")
-        return t("")
+        return sn(nil, {
+            t('"""'),
+            i(1, "Description goes here"),
+            t('"""')
+        })
     end
 
     local query = assert(vim.treesitter.query.get(
         "python", "python_function_description"
     ), "No query")
-    if treesitter_docstring_handler[info] then
-        return treesitter_docstring_handler[info](query)
+    print("Query: " .. vim.inspect(query))
+    print("Node: " .. vim.inspect(node))
+    if treesitter_docstring_handler[info.template] then
+        for id, capture in query:iter_captures(node, 0) do
+            print("ID: " .. vim.inspect(query[id]))
+            print("capture type: " .. vim.inspect(capture:type()))
+        end
+        local handler = treesitter_docstring_handler[info.template]
+        return handler(query, node)
     end
 
-    -- for id, capture in query:iter_captures(node, 0) do
-    --     local text = vim.treesitter.get_node_text(capture, 0)
-    --     print("Capture: " .. text)
-    --     print("Type: " .. capture:type())
-    --     if treesitter_handler[capture:type()] then
-    --         return treesitter_handler[capture:type()](capture, type)
-    --     end
-    -- end
-    return t("")
+    return sn(nil, { i(1, "Function not found") })
 end
 
 
 local function python_docstring(arg)
     local func = arg[1][1]
     local args = arg[2][1]
-    local ret = arg[2][1]
-    return sn(
-        nil,
-        treesitter_python_create_docstring({
-            index = 0,
-            func,
-            args,
-            ret
+    local ret = arg[3][1]
+    return sn(nil, {
+        c(1, {
+            treesitter_python_create_docstring({
+                index = 0,
+                func,
+                args,
+                ret,
+                template = "full",
+            }),
+            treesitter_python_create_docstring({
+                index = 0,
+                func,
+                args,
+                ret,
+                template = "timestamp",
+            }),
+            treesitter_python_create_docstring({
+                index = 0,
+                func,
+                args,
+                ret,
+                template = "simple",
+            }),
+            t("", {
+                node_ext_opts = {
+                    active = {
+                        virt_text = { { "<- Option: no docstring", "GruvboxOrange" } }
+                    }
+                }
+            }),
         })
-    )
+    })
 end
 
 -- ls.parse.parse_snippet(<text>, <VSCode style snippet>)
 ls.add_snippets("all", {
     s("test", fmt([[
         def {func}({args}){ret}:
-            """
             {doc}
-            """
             {body}
     ]], {
         func = i(1, "my_func"),

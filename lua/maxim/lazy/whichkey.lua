@@ -10,7 +10,7 @@ return {
     },
     config = function()
         require('which-key').add({
-        -- require('which-key').register({
+            -- require('which-key').register({
             { "<leader>g",  group = "Git related operations [Gitmoji, NeoGit, Git fugitive]" },
             { "<leader>gt", group = "Toggle ..." },
             { "<leader>h",  group = "Remove search highlights." },
