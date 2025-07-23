@@ -45,5 +45,6 @@ return {
             builtin.live_grep({})
         end, { desc = "Search word in project." })
         vim.keymap.set("n", "<leader>vh", builtin.help_tags, { desc = "Search in help." })
+        vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "Telescope diagnostics" })
     end,
 }

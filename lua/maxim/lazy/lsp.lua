@@ -67,6 +67,7 @@ return {
         }
 
         -- Python
+        -- Python env settings:
         lspconfig.pylsp.setup({
             on_attach = function(client, bufnr)
                 if client.server_capabilities.documentSymbolProvider then
@@ -91,7 +92,12 @@ return {
                         },
                     }
                 }
-            }
+            },
+            before_init = function(_, config)
+                local venv_path = os.getenv("VIRTUAL_ENV")
+                -- vim.notify(vim.inspect(venv_path))
+                config.settings.python.pythonPath = venv_path
+            end
         })
 
         -- Lua
@@ -128,76 +134,19 @@ return {
 
         -- get colors from theme
         local colors = require("maxim.lualine_theme.colors")
+        -- local float_bg_color = colors.base
+        local float_bg_color = colors.surface0
         -- set up colors for general floating windows (harpoon, telescope)
-        vim.api.nvim_set_hl(0, "NormalFloat", { bg = colors.base, })
-        vim.api.nvim_set_hl(0, "FloatBorder", { bg = colors.base, })
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = float_bg_color, })
+        vim.api.nvim_set_hl(0, "FloatBorder", { bg = float_bg_color, })
         -- set up colors of completion menu
-        vim.api.nvim_set_hl(0, "Pmenu", { bg = colors.base })
+        vim.api.nvim_set_hl(0, "Pmenu", { bg = float_bg_color, })
         vim.api.nvim_set_hl(0, "PmenuSel", {
             bg = colors.mauve,
             fg = colors.crust,
         })
 
-        -- This part handles autocompletion
-        local cmp = require("cmp")
-        local cmp_select = { behavior = cmp.SelectBehavior.Select }
-        local lspkind = require("lspkind")
-        local luasnip = require("luasnip")
-        -- path = "./lua/maxim/snippets"
-        -- abs_path = vim.fn.fnamemodify(path, ":p")
-        -- vim.notify("Path: " .. abs_path, vim.log.levels.Info)
+        -- Loads the lua snippets from luasnip.
         require("luasnip.loaders.from_lua").load({ paths = "./lua/maxim/snippets" })
-        -- vim.notify("Snippets loaded from lsp configuration.", vim.log.levels.INFO)
-
-        -- This next section is my nvim-cmp setup, but currently i am migrating to blink
-
-        -- cmp.setup({
-        --     -- This sets up a snippet for autocompletion of a function in lua
-        --     snippet = {
-        --         expand = function(args)
-        --             luasnip.lsp_expand(args.body) -- For `luasnip` users.
-        --         end,
-        --     },
-        --     -- This sets up the hotkeys for navigating and selecting
-        --     -- autocompletion setups
-        --     mapping = cmp.mapping.preset.insert({
-        --         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-        --         ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-        --         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-        --         ['<C-Space>'] = cmp.mapping.complete(),
-        --     }),
-        --     -- This indicates the sources which can be used for autocompletion
-        --     sources = cmp.config.sources({
-        --         { name = 'nvim_lsp' },
-        --         { name = 'luasnip' }, -- For luasnip users.
-        --     }, {
-        --         { name = 'buffer' },
-        --     }),
-        --
-        --     -- Set up the formatting, lspkind adds symbols
-        --     formatting = {
-        --         window = {
-        --             documentation = cmp.config.window.bordered(),
-        --
-        --         },
-        --         format = function(entry, vim_item)
-        --             -- Add symbol & text
-        --             vim_item.kind = lspkind.symbolic(vim_item.kind, {
-        --                 mode = "symbol_text"
-        --             })
-        --
-        --             -- Add source name (e.g. [LSP], [Snippet], [Buffer])
-        --             vim_item.menu = ({
-        --                 nvim_lsp = "[LSP]",
-        --                 luasnip = "[Snippet]",
-        --                 nvim_lua = "[Lua]",
-        --                 path = "[Path]",
-        --                 buffer = "[Buffer]",
-        --             })[entry.source.name] or ("[" .. entry.source.name .. "]")
-        --
-        --             return vim_item
-        --         end
-        --     }
-        -- })
     end,
 }

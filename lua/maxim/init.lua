@@ -12,6 +12,7 @@ local function get_python_host_prog()
     local python_path = 'C:\\Users\\MaximeVanrusselt\\scoop\\apps\\python\\current\\python.exe'
     local venv_path = os.getenv('VIRTUAL_ENV')
     if venv_path then
+        -- vim.nofity(vim.inspect(venv_path))
         return venv_path .. '\\Scripts\\python.exe'
     else
         return python_path

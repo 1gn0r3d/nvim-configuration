@@ -120,8 +120,123 @@ local function create_function_description(args, time_entry)
 end
 
 
+local treesitter_docstring_handler = {
+    full_docstring = function()
+        return t ""
+    end,
+    full_docstring_with_timestamp = function()
+        return t ""
+    end,
+    simple_docstring = function(query)
+        for id, capture in query:iter_captures() do
+            print("ID: " .. query[id])
+            print("capture type: " .. capture:type())
+            if capture:type() == "identifier" then
+                return sn(
+                    t('"""\n'),
+                    t("Function" .. capture:type()), i(1, "(description)"),
+                    t('"""\n')
+                )
+            end
+        end
+    end,
+    no_docstring = function()
+        return t ""
+    end
+}
+
+local function treesitter_python_create_docstring(info)
+    local function_node_types = {
+        function_definition = true,
+        -- function_declaration = true,
+        -- method_declaration = true,
+        -- func_literal = true,
+    }
+
+    -- Find the first function node that is a parent of the cursor
+    local node = vim.treesitter.get_node()
+    while node ~= nil do
+        if function_node_types[node:type()] then
+            break
+        end
+        node = node:parent()
+    end
+
+    -- Exit if no match
+    if not node then
+        vim.notify("Treesitter Error: Not inside a function.")
+        return t("")
+    end
+
+    local query = assert(vim.treesitter.query.get(
+        "python", "python_function_description"
+    ), "No query")
+    if treesitter_docstring_handler[info] then
+        return treesitter_docstring_handler[info](query)
+    end
+
+    -- for id, capture in query:iter_captures(node, 0) do
+    --     local text = vim.treesitter.get_node_text(capture, 0)
+    --     print("Capture: " .. text)
+    --     print("Type: " .. capture:type())
+    --     if treesitter_handler[capture:type()] then
+    --         return treesitter_handler[capture:type()](capture, type)
+    --     end
+    -- end
+    return t("")
+end
+
+
+local function python_docstring(arg)
+    local func = arg[1][1]
+    local args = arg[2][1]
+    local ret = arg[2][1]
+    return sn(
+        nil,
+        treesitter_python_create_docstring({
+            index = 0,
+            func,
+            args,
+            ret
+        })
+    )
+end
+
 -- ls.parse.parse_snippet(<text>, <VSCode style snippet>)
 ls.add_snippets("all", {
+    s("test", fmt([[
+        def {func}({args}){ret}:
+            """
+            {doc}
+            """
+            {body}
+    ]], {
+        func = i(1, "my_func"),
+        args = i(2, "arg: type"),
+        -- ret = i(3, "return type"),
+        ret = isn(3, { c(1, {
+            t('', {
+                node_ext_opts = {
+                    active = {
+                        virt_text = { { "<- Option: no return type", "GruvboxOrange" } }
+                    }
+                }
+            }),
+            sn(nil, {
+                t(' -> '),
+                i(1, "return_type")
+            }, {
+                node_ext_opts = {
+                    active = {
+                        virt_text = { { "<- Option: specify return type", "GruvboxOrange" } }
+                    }
+                }
+            }),
+        }) }, "$PARENT_INDENT\t"),
+        -- doc = i(4, "doc"),
+        doc = d(4, python_docstring, { 1, 2, 3 }),
+        body = i(0),
+    })),
 })
 
 -- python snippets
@@ -217,7 +332,7 @@ ls.add_snippets("python", {
 
 -- lua snippets
 ls.add_snippets("lua", {
-    ls.parser.parse_snippet("local function", "local $1 = function($2)\n    $0\n end"),
+    ls.parser.parse_snippet("local function", "local function $1($2)\n    $0\n end"),
     s("req",
         fmt([[local {} = require("{}")]], {
             f(function(import_name)
