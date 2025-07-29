@@ -62,24 +62,6 @@ return {
             harpoon:list():next()
             -- harpoon:list():select(2)
         end, { desc = "Next harpoon quicktoggle list item.", noremap = true })
-
-        -- Setup autocommands to change the cwd when the directory is switched (for session manager)
-        -- Autocommand is not working yet
-
-
-        -- local function update_harpoon_cwd()
-        --     local current_cwd = vim.vn.getcwd()
-        --     harpoon.set_current_dir(current_cwd)
-        -- end
-
-        -- vim.api.nvim_create_augroup("HarpoonCwd", { clear = true })
-        -- vim.api.nvim_create_autocmd("Dirchanged", {
-        --     pattern = '*',
-        --     group = "HarpoonCwd",
-        --     callback = function()
-        --         update_harpoon_cwd()
-        --     end,
-        -- })
     end,
 
 }

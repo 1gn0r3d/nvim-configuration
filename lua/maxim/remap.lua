@@ -6,7 +6,8 @@ vim.api.nvim_set_keymap("n", "<Tab>", "<Cmd>bnext<CR>", { noremap = true, silent
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'Project view' })
 
 -- Saving and quitting
-vim.keymap.set("n", "<leader>w", "<CMD>w<CR>", { desc = "Save file." })
+vim.keymap.set("n", "<leader>w", "<CMD>update<CR>", { desc = "Save file." })
+-- vim.keymap.set("n", "<leader>w", "<CMD>w<CR>", { desc = "Save file." })
 vim.keymap.set("n", "<leader>qq", "<CMD>qa!<CR>", { desc = "Quit all." })
 vim.keymap.set("n", "<leader>wq", "<CMD>wqa!<CR>", { desc = "Save and quit all." })
 vim.keymap.set("n", "<leader>q", "<CMD>q!<CR>",
@@ -66,7 +67,7 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copies entire line to system
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Deletes without yanking text." })
 
 vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "Format code layout." })
+-- vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "Format code layout." })
 
 -- go to errors in quick fix list??
 vim.keymap.set("n", "<leader>k", "<cmd>cnext<CR>zz", { desc = "Go to next item in quickfix list." })
@@ -80,7 +81,8 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>",
     { silent = true, desc = "Make the current file executable. (Linux)" })
 
 vim.keymap.set("n", "<leader>cm", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "~~ MAKE IT RAIN! ~~" })
-vim.keymap.set("n", "<leader>cg", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "~~ Game of life! ~~" })
+vim.keymap.set("n", "<leader>cg", "<cmd>CellularAutomaton game_of_life<CR>", { desc = "~~ Game of life! ~~" })
+vim.keymap.set("n", "<leader>cs", "<cmd>CellularAutomaton scramble<CR>", { desc = "~~ Scramble! ~~" })
 
 -- remaps for creating horizontal and vertical splits (partially taken over by windowcolumn.nvim)
 vim.keymap.set("n", "<leader>sh", "<CMD>split<CR>", { noremap = true, silent = true, desc = "Create horizontal split." })

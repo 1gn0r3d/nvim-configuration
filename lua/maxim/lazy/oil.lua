@@ -34,20 +34,6 @@ return {
         vim.keymap.set("n", "<leader>-", require("oil").toggle_float,
             { desc = "Open parent directory in floating window." })
 
-        -- Setup a local function which opens the project view (parent directory) on a window to the right
-        -- local function open_oil_in_right_split()
-        --     local total_width = vim.o.columns
-        --     local split_width = math.floor(total_width * .3)
-        --     vim.cmd("vsplit")
-        --     vim.cmd("wincmd l")
-        --     vim.cmd("vertical resize " .. split_width)
-        --     vim.cmd("Oil")
-        -- end
-
-        -- -- Open parent directory in a split to the right
-        -- vim.keymap.set("n", "<leader>pV", open_oil_in_right_split,
-        --     { desc = "Open parent directory in split to the right." })
-
         -- Setup an autocommand which maps <leader>pv while inside an oil window
         -- to go back to the previous buffer.
         local oil_augroup = vim.api.nvim_create_augroup("oil_augroup", { clear = true })

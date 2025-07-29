@@ -38,6 +38,17 @@ for option, value in pairs(powershell_options) do
     vim.opt[option] = value
 end
 
+-- diagnostics window view
+vim.diagnostic.config({
+    float = {
+        border = "rounded",
+        -- source = true,
+        source = "if_many",
+        header = "",
+        prefix = "",
+    }
+})
+
 local autocmd = vim.api.nvim_create_autocmd
 local maxim = vim.api.nvim_create_augroup("maxim", {})
 
@@ -51,7 +62,6 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end,
             { buffer = e.buf, desc = "Search workspace symbols." })
         vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float(nil, { source = true }) end,
-            -- vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end,
             { buffer = e.buf, desc = "Open floating diagnostics." })
         vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end,
             { buffer = e.buf, desc = "Open code actions." })

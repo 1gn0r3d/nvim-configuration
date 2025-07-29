@@ -6,7 +6,8 @@ return {
             -- Setup highlighting: use rownumbers rather than signcolumn.
             numhl = true,
             signcolumn = false,
-            current_line_blame = true,
+            -- current_line_blame = true,
+            current_line_blame = false,
 
             -- Setup hotkeys
             on_attach = function(bufnr)

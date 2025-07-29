@@ -45,19 +45,5 @@ return {
             -- Replace 'gitmoji_list' with the actual reference to your gitmoji list
             toggle_telescope(smoji_list)
         end, { desc = "Select gitmoji." })
-
-        -- Set up autocommand for vim fugitive (to insert gitmojo at start of git message)
-        -- local autocmd = vim.api.nvim_create_autocmd
-        -- local augroup = vim.api.nvim_create_augroup("Gitmoji", { clear = true })
-        -- autocmd("FileWrite", {
-        --     group = augroup,
-        --     pattern = "COMMIT_EDITMSG",
-        --     callback = function()
-        --         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
-        --         vim.schedule(function()
-        --             toggle_telescope(smoji_list)
-        --         end)
-        --     end
-        -- })
     end
 }

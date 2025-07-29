@@ -28,6 +28,12 @@ return {
                     end,
                 },
             },
+            defaults = {
+                mappings = {
+                    i = { ["<c-t>"] = require("trouble.sources.telescope").open },
+                    n = { ["<c-t>"] = require("trouble.sources.telescope").open }
+                }
+            },
         })
 
         local builtin = require("telescope.builtin")

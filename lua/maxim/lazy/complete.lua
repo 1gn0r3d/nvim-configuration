@@ -70,6 +70,10 @@ return {
                 auto_show_delay_ms = 500,
                 window = { border = 'rounded' },
             },
+            ghost_text = {
+                enabled = true,
+                show_with_menu = true,
+            },
         },
     },
 }

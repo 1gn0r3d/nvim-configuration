@@ -139,12 +139,14 @@ return {
         -- set up colors for general floating windows (harpoon, telescope)
         vim.api.nvim_set_hl(0, "NormalFloat", { bg = float_bg_color, })
         vim.api.nvim_set_hl(0, "FloatBorder", { bg = float_bg_color, })
+        vim.api.nvim_set_hl(0, "FloatTitle", { bg = float_bg_color, })
         -- set up colors of completion menu
         vim.api.nvim_set_hl(0, "Pmenu", { bg = float_bg_color, })
         vim.api.nvim_set_hl(0, "PmenuSel", {
             bg = colors.mauve,
             fg = colors.crust,
         })
+        vim.api.nvim_set_hl(0, "CmpGhostText", { fg = colors.surface1 })
 
         -- Loads the lua snippets from luasnip.
         require("luasnip.loaders.from_lua").load({ paths = "./lua/maxim/snippets" })

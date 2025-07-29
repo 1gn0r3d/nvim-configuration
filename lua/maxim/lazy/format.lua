@@ -24,7 +24,7 @@ return {
                 lsp_fallback = true,
                 async = false,
                 timeout_ms = 500,
-            }, { desc = "Format code layout." })
-        end)
+            })
+        end, { desc = "Format code layout." })
     end,
 }

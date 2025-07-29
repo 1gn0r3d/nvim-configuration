@@ -1,6 +1,7 @@
 local ls = require("luasnip")
 local types = require("luasnip.util.types")
 require("luasnip.session.snippet_collection").clear_snippets("all")
+require("luasnip.session.snippet_collection").clear_snippets("python")
 
 -- this is a snippet creator:
 -- s(<trigger>, <nodes>)
@@ -46,214 +47,238 @@ local isn = ls.indent_snippet_node
 local r = ls.restore_node
 
 local function curtime()
-    return f(function()
-        return os.date("%D - %H:%M")
-    end)
+    return os.date("%D - %H:%M")
 end
 
-
-local function python_type(arg)
-    if arg[1] == "" then
-        return ""
-    else
-        local ret_type = vim.split(arg[1], " -> ", true)
-        return ret_type[#ret_type]
+local function parse_python_query(query, node, time)
+    time = time or nil
+    local header = [[
+"""
+]]
+    if time ~= nil then
+        header = header .. [[
+{ind}Created: {time} - author:  Maxim Vanrusselt
+]]
+        header = header:gsub("{time}", time)
     end
-end
+    header = header .. [[
+{ind}Function: %s  {func_desc}
 
-local function python_args_dyn(args)
-    local arg_string = args[1] or ""
-    local arg_list = vim.split(arg_string, ",", { trimempty = true })
+{ind}Args:]]
+    local footer = [[
+{ind}Return:
+{ind}   %s
 
-    local nodes = {}
-    local insert_index = 1
+{ind}"""]]
 
-    for _, arg in ipairs(arg_list) do
-        local a = vim.split(arg, "=", { trimempty = true })
-        b = vim.split(a[1], ":", { trimempty = true })
-        local description_string = "Description of " .. b[#b]
 
-        local def = vim.split(arg, "=", { trimempty = true })
+    -- Set up the string formats for my arguments
+    local arg_str = "{ind}   %s - {desc%d}"
+    local def_arg = "{ind}   %s - {desc%d} (default value: %%s)"
+    local typ_arg = "{ind}   %s: %%s - {desc%d}"
+    local t_d_arg = "{ind}   %s: %%s - {desc%d} (default value: {default})"
 
-        if #def > 1 then
-            description_string = description_string .. " (Default value: " .. def[#def] .. ")"
+    -- Set up the partial strings as well
+    local def_str_partial = ""
+    local typ_str_partial = ""
+    local t_d_str_partial = ""
+
+    -- Initialise the list of strings to append in the end:
+    local format_arg_strings = {}
+    local arguments = {}
+
+    -- Set up default values for string replacement
+    local function_name = "my_func"
+    local return_type = "none"
+
+
+    local num_args = 1
+    for id, capture in query:iter_captures(node) do
+        local name = query.captures[id]
+        local text = vim.treesitter.get_node_text(capture, 0)
+
+        if name == "function.name" then
+            function_name = text
+        end
+        if name == "function.return_type" then
+            return_type = text
         end
 
-        table.insert(nodes, t(a[1] .. "  - "))
-        table.insert(nodes, i(insert_index, description_string))
-        table.insert(nodes, t({ "", "" }))
-        insert_index = insert_index + 1
+        -- Handle normal arguments
+        if name == "param.name" then
+            local str = string.format(arg_str, text, num_args)
+            table.insert(format_arg_strings, str)
+            arguments["desc" .. num_args] = i(num_args + 1, "<Arg" .. num_args .. " description>")
+            num_args = num_args + 1
+        end
+
+        -- Handle arguments with default value
+        if name == "def_param.name" then
+            def_str_partial = string.format(def_arg, text, num_args)
+        elseif name == "def_param.default" then
+            local str = string.format(def_str_partial, text)
+            table.insert(format_arg_strings, str)
+            arguments["desc" .. num_args] = i(num_args + 1, "<Arg" .. num_args .. " description>")
+            num_args = num_args + 1
+        end
+
+        -- Handle arguments with a type
+        if name == "typ_param.name" then
+            typ_str_partial = string.format(typ_arg, text, num_args)
+        elseif name == "typ_param.type" then
+            local str = string.format(typ_str_partial, text)
+            table.insert(format_arg_strings, str)
+            arguments["desc" .. num_args] = i(num_args + 1, "<Arg" .. num_args .. " description>")
+            num_args = num_args + 1
+        end
+
+        -- Handle arguments with a type and default value
+        if name == "typ_def_param.name" then
+            t_d_str_partial = string.format(t_d_arg, text, num_args)
+        elseif name == "typ_def_param.type" then
+            t_d_str_partial = string.format(t_d_str_partial, text)
+        elseif name == "typ_def_param.default" then
+            local str = t_d_str_partial:gsub("{default}", text)
+            table.insert(format_arg_strings, str)
+            arguments["desc" .. num_args] = i(num_args + 1, "<Arg" .. num_args .. " description>")
+            num_args = num_args + 1
+        end
     end
-    -- print(vim.inspect(nodes))
-    return isn(nil, nodes, "$PARENT_INDENT\t   ")
+    header = string.format(header, function_name)
+    footer = string.format(footer, return_type)
+
+    local return_string_list = { header }
+    for _, line in ipairs(format_arg_strings) do
+        table.insert(return_string_list, line)
+    end
+    table.insert(return_string_list, footer)
+    local return_string = table.concat(return_string_list, "\n")
+
+    return return_string, arguments
 end
-
-
-local function create_function_description(args, time_entry)
-    local format_string_table = { '"""' }
-    local time = time_entry or ""
-    if time ~= "" then
-        time = time .. "\n\t"
-    end
-    local arg_string = args[1] or ""
-    local arg_list = vim.split(arg_string, ",", { trimempty = true })
-
-    table.insert(format_string_table, time)
-    table.insert(format_string_table, [[{fname} - {desc}
-
-    Args:
-        {args}
-        ]])
-    -- print(vim.inspect(arg_list))
-    for ind, a in ipairs(arg_list) do
-        -- print(vim.inspect(a))
-        -- table.insert(format_string_table, "{arg" .. ind .. "}")
-    end
-    table.insert(format_string_table, [[
-
-    Returns:
-        {returns}
-"""
-    ]])
-
-    return table.concat(format_string_table)
-end
-
 
 local treesitter_docstring_handler = {
-    full = function(query, node)
-        print("query (from inside full function)" .. vim.inspect(query))
-        return sn(nil, { i(1, "Full text goes here") }, {
+    full = function(query, node, indent)
+        local format, arguments = parse_python_query(query, node)
+        arguments['func_desc'] = i(1, "<Function description>")
+        arguments['ind'] = t(indent)
+        return sn(nil, fmt(format, arguments), {
             node_ext_opts = {
                 active = {
-                    virt_text = { { "<- Default value (for full text)", "GruvboxOrange" } }
+                    virt_text = { { "<- Option: full docstring", "GruvboxOrange" } }
                 }
             }
         })
     end,
-    timestamp = function(query, node)
-        print("query (from inside timestamp function)" .. vim.inspect(query))
-        -- for id, capture in query:iter_captures() do
-        --     print("ID: " .. query[id])
-        --     print("capture type: " .. capture:type())
-        -- end
-        return sn(nil, { i(1, "Timestamp text goes here") }, {
+    timestamp = function(query, node, indent)
+        local time = curtime()
+        local format, arguments = parse_python_query(query, node, time)
+        arguments['func_desc'] = i(1, "<Function description>")
+        arguments['ind'] = t(indent)
+        return sn(nil, fmt(format, arguments), {
             node_ext_opts = {
                 active = {
-                    virt_text = { { "<- Default value (for timestamp text)", "GruvboxOrange" } }
+                    virt_text = { { "<- Option: docstring with timestamp", "GruvboxOrange" } }
                 }
             }
         })
     end,
-    simple = function(query, node)
-        print("query (from inside simple function)" .. vim.inspect(query))
-        print("node (from inside simple function)" .. vim.inspect(node))
-        for id, capture in query:iter_captures(node, 0) do
+    simple = function(query, node, indent)
+        for _, capture in query:iter_captures(node, 0) do
             if capture:type() == "identifier" then
-                print("ID: " .. vim.inspect(query[id]))
-                print("capture type: " .. vim.inspect(capture:type()))
-                return sn(nil, {
-                    -- t({ '"""\n' }),
-                    -- t("Function" .. vim.inspect(capture:type())), i(1, "(description)"),
-                    -- t("Function"), i(1, "(description)"),
-                    -- t({ '"""\n' }) }, {
-                    -- i(1, "(description)") }, {
-                    i(1, "Function" .. vim.inspect(capture:type())),
-                    -- i(1, "(description)"),
+                return sn(nil, fmt([[
+"""
+{ind}Function: {func_name}  {func_desc}
+{ind}"""
+]], {
+                    func_name = f(function() return vim.inspect(capture:type()) end),
+                    func_desc = i(1, "<Function description>"),
+                    ind = t(indent)
+                }), {
                     node_ext_opts = {
                         active = {
-                            virt_text = { { "<- Default value (for full text)", "GruvboxOrange" } }
+                            virt_text = { { "<- Option: simple docstring" } }
                         }
                     }
                 })
             end
         end
     end,
-}
-
-local function treesitter_python_create_docstring(info)
-    local function_node_types = {
-        function_definition = true,
-    }
-
-    -- Find the first function node that is a parent of the cursor
-    local node = vim.treesitter.get_node()
-    while node ~= nil do
-        if function_node_types[node:type()] then
-            break
-        end
-        node = node:parent()
-    end
-
-    -- Exit if no match
-    if not node then
-        vim.notify("Treesitter Error: Not inside a function.")
-        return sn(nil, {
-            t('"""'),
-            i(1, "Description goes here"),
-            t('"""')
+    no = function(_, _, _)
+        return t("", {
+            node_ext_opts = {
+                active = {
+                    virt_text = { { "<- Option: no docstring", "GruvboxOrange" } }
+                }
+            }
         })
     end
+}
 
-    local query = assert(vim.treesitter.query.get(
-        "python", "python_function_description"
-    ), "No query")
-    print("Query: " .. vim.inspect(query))
-    print("Node: " .. vim.inspect(node))
-    if treesitter_docstring_handler[info.template] then
-        for id, capture in query:iter_captures(node, 0) do
-            print("ID: " .. vim.inspect(query[id]))
-            print("capture type: " .. vim.inspect(capture:type()))
+local function treesitter_python_create_docstring(template)
+    return function(snip)
+        local indent = snip and snip.env.TM_CURRENT_LINE:match("^%s*") and not "" or "\t"
+        local function_node_types = {
+            function_definition = true,
+        }
+
+        -- Find the first function node that is a parent of the cursor
+        local node = vim.treesitter.get_node()
+        while node ~= nil do
+            if function_node_types[node:type()] then
+                break
+            end
+            node = node:parent()
         end
-        local handler = treesitter_docstring_handler[info.template]
-        return handler(query, node)
-    end
 
-    return sn(nil, { i(1, "Function not found") })
+        -- Exit if no match
+        if not node then
+            -- vim.notify("Treesitter Error: Not inside a function.")
+            return sn(nil, {
+                t('"""'),
+                i(1, "Placeholder description"),
+                t('"""')
+            })
+        end
+
+        local query = assert(vim.treesitter.query.get(
+            "python", "python_function_description"
+        ), "No query")
+
+        if treesitter_docstring_handler[template] then
+            local handler = treesitter_docstring_handler[template]
+            return handler(query, node, indent)
+        end
+
+        return sn(nil, { r(1, "Function not found") })
+    end
 end
 
+local python_docstring_full = treesitter_python_create_docstring('full')
+local python_docstring_timestamp = treesitter_python_create_docstring('timestamp')
+local python_docstring_simple = treesitter_python_create_docstring('simple')
+local python_no_docstring = treesitter_python_create_docstring('no')
 
-local function python_docstring(arg)
-    local func = arg[1][1]
-    local args = arg[2][1]
-    local ret = arg[3][1]
+local function python_docstring(snip)
     return sn(nil, {
         c(1, {
-            treesitter_python_create_docstring({
-                index = 0,
-                func,
-                args,
-                ret,
-                template = "full",
-            }),
-            treesitter_python_create_docstring({
-                index = 0,
-                func,
-                args,
-                ret,
-                template = "timestamp",
-            }),
-            treesitter_python_create_docstring({
-                index = 0,
-                func,
-                args,
-                ret,
-                template = "simple",
-            }),
-            t("", {
-                node_ext_opts = {
-                    active = {
-                        virt_text = { { "<- Option: no docstring", "GruvboxOrange" } }
-                    }
-                }
-            }),
+            python_docstring_full(snip),
+            python_docstring_timestamp(snip),
+            python_docstring_simple(snip),
+            python_no_docstring(snip),
         })
     })
 end
 
+
 -- ls.parse.parse_snippet(<text>, <VSCode style snippet>)
 ls.add_snippets("all", {
-    s("test", fmt([[
+})
+
+-- python snippets
+ls.add_snippets("python", {
+    -- create a python function definition with automated docstring
+    s("def", fmt([[
         def {func}({args}){ret}:
             {doc}
             {body}
@@ -281,99 +306,11 @@ ls.add_snippets("all", {
             }),
         }) }, "$PARENT_INDENT\t"),
         -- doc = i(4, "doc"),
-        doc = d(4, python_docstring, { 1, 2, 3 }),
-        body = i(0),
-    })),
-})
-
--- python snippets
-ls.add_snippets("python", {
-    -- create a python function definition with automated docstring
-    s({ trig = "def_function", desc = "Snippet to define a python function." }, fmt([[
-        def {func}({args}){ret}:
-            {doc}
-            {body}
-    ]], {
-        func = i(1, "my_func"),
-        args = i(2, "arg: type"),
-        ret = isn(3, { c(1, {
-            t('', {
-                node_ext_opts = {
-                    active = {
-                        virt_text = { { "<- Option: no return type", "GruvboxOrange" } }
-                    }
-                }
-            }),
-            sn(nil, {
-                t(' -> '),
-                i(1, "return_type")
-            }, {
-                node_ext_opts = {
-                    active = {
-                        virt_text = { { "<- Option: specify return type", "GruvboxOrange" } }
-                    }
-                }
-            }),
-        }) }, "$PARENT_INDENT\t"),
-        doc = d(4, function(args)
-            local func_name = args[1][1]
-            local arg_list = args[2]
-            local ret_type = args[3]
-
-            -- print("arg list: " .. vim.inspect(arg_list))
-
-            local docstring_choices = {
-                sn(nil, fmt(create_function_description(arg_list), {
-                    fname = t(func_name),
-                    desc = r(1, "Function description."),
-                    -- args = sn(nil, t(arg_list)),
-                    args = python_args_dyn(arg_list),
-                    returns = python_type(ret_type),
-                }), {
-                    node_ext_opts = {
-                        active = {
-                            virt_text = { { "<- Option: full docstring", "GruvboxOrange" } }
-                        }
-                    }
-                }),
-                sn(nil, fmt(create_function_description(arg_list, "Created on {time} - Maxim Vanrusselt"), {
-                    time = curtime(),
-                    fname = t(func_name),
-                    desc = r(1, "Function description."),
-                    args = sn(nil, t(arg_list)),
-                    returns = python_type(ret_type),
-                }), {
-                    node_ext_opts = {
-                        active = {
-                            virt_text = { { "<- Option: full docstring with author", "GruvboxOrange" } }
-                        }
-                    }
-                }),
-                sn(nil, fmt([["""{desc}"""]], {
-                    desc = r(1, "Function description.")
-                }), {
-                    node_ext_opts = {
-                        active = {
-                            virt_text = { { "<- Option: short description", "GruvboxOrange" } }
-                        }
-                    }
-                }),
-                t("", {
-                    node_ext_opts = {
-                        active = {
-                            virt_text = { { "<- Option: no docstring", "GruvboxOrange" } }
-                        }
-                    }
-                }),
-            }
-
-            return isn(nil, {
-                c(1, docstring_choices)
-            }, "$PARENT_INDENT\t")
+        doc = d(4, function(_, snip)
+            return python_docstring(snip)
         end, { 1, 2, 3 }),
         body = i(0),
-    }
-    )),
+    })),
 })
 
 
@@ -383,7 +320,7 @@ ls.add_snippets("lua", {
     s("req",
         fmt([[local {} = require("{}")]], {
             f(function(import_name)
-                local parts = vim.split(import_name[1][1], ".", true)
+                local parts = vim.split(import_name[1][1], ".", { plain = true })
                 return parts[#parts] or ""
             end, { 1 }),
             i(1)

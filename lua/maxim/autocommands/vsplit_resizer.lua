@@ -7,7 +7,7 @@ local function adjust_window_width(window)
         colorcolumn = "80"
     end
 
-    local colorcolumn_list = split(colorcolumn, ",")
+    local colorcolumn_list = string.split(colorcolumn, ",")
     for i, value in ipairs(colorcolumn_list) do
         colorcolumn_list[i] = tonumber(value)
     end
