@@ -91,7 +91,6 @@ local function parse_python_query(query, node, time)
     local function_name = "my_func"
     local return_type = "none"
 
-
     local num_args = 1
     for id, capture in query:iter_captures(node) do
         local name = query.captures[id]
@@ -310,6 +309,13 @@ ls.add_snippets("python", {
             return python_docstring(snip)
         end, { 1, 2, 3 }),
         body = i(0),
+    })),
+    s("docstring", fmt([[
+    """
+    {doc}
+    """
+        ]], {
+        doc = i(1, "<docstring>")
     })),
 })
 

@@ -56,7 +56,6 @@ return {
         -- Setup an autocommand which maps <leader>t*, while inside an oil window
         -- to go back to the previous buffer.
         local trouble_augroup = vim.api.nvim_create_augroup("trouble_augroup", { clear = true })
-        local trouble_augroup = vim.api.nvim_create_augroup("trouble_augroup", { clear = true })
         autocmd("Filetype", {
             pattern = "trouble",
             group = trouble_augroup,
